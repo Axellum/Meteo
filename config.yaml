@@ -351,6 +351,7 @@ sensor:
        friendly_name: pluis_15mn
 
 
+
       pluis_20mn:
        value_template: >-
           {% if states['sensor.capbreton_next_rain'].attributes.rain_level_20min == 1 %}
@@ -372,13 +373,13 @@ sensor:
     
       pluis_25mn:
        value_template: >-
-          {% if states['sensor.capbreton_next_rain'].attributes.rain_level_20min == 1 %}
+          {% if states['sensor.capbreton_next_rain'].attributes.rain_level_25min == 1 %}
             35
-          {% elif states['sensor.capbreton_next_rain'].attributes.rain_level_20min == 2 %}
+          {% elif states['sensor.capbreton_next_rain'].attributes.rain_level_25min == 2 %}
             36
-          {% elif states['sensor.capbreton_next_rain'].attributes.rain_level_20min == 3 %}
+          {% elif states['sensor.capbreton_next_rain'].attributes.rain_level_25min == 3 %}
             37
-          {% elif states['sensor.capbreton_next_rain'].attributes.rain_level_20min == 4 %}
+          {% elif states['sensor.capbreton_next_rain'].attributes.rain_level_25min == 4 %}
             38
           {% else %}
             34
@@ -388,13 +389,13 @@ sensor:
 
       pluis_30mn:
        value_template: >-
-          {% if state_attr("sensor.capbreton_next_rain","rain_level_30min")[0] =='1' %}
+          {% if states['sensor.capbreton_next_rain'].attributes.rain_level_30min == 1 %}
             35
-          {% elif state_attr("sensor.capbreton_next_rain","rain_level_30min")[0] =='2' %}
+          {% elif states['sensor.capbreton_next_rain'].attributes.rain_level_30min == 2  %}
             36
-          {% elif state_attr("sensor.capbreton_next_rain","rain_level_30min")[0] =='3' %}
+          {% elif states['sensor.capbreton_next_rain'].attributes.rain_level_30min == 3 %}
             37
-          {% elif state_attr("sensor.capbreton_next_rain","rain_level_30min")[0] =='4' %}
+          {% elif states['sensor.capbreton_next_rain'].attributes.rain_level_30min == 4 %}
             38
           {% else %}
             34
@@ -405,13 +406,13 @@ sensor:
     
       pluis_35mn:
        value_template: >-
-          {% if state_attr("sensor.capbreton_next_rain","rain_level_35min")[0] =='1' %}
+          {% if states['sensor.capbreton_next_rain'].attributes.rain_level_35min == 1 %}
             35
-          {% elif state_attr("sensor.capbreton_next_rain","rain_level_35min")[0] =='2' %}
+          {% elif states['sensor.capbreton_next_rain'].attributes.rain_level_35min == 2 %}
             36
-          {% elif state_attr("sensor.capbreton_next_rain","rain_level_35min")[0] =='3' %}
+          {% elif states['sensor.capbreton_next_rain'].attributes.rain_level_35min == 3 %}
             37
-          {% elif state_attr("sensor.capbreton_next_rain","rain_level_35min")[0] =='4' %}
+          {% elif states['sensor.capbreton_next_rain'].attributes.rain_level_35min == 4 %}
             38
           {% else %}
             34
@@ -421,13 +422,13 @@ sensor:
 
       pluis_40mn:
        value_template: >-
-          {% if state_attr("sensor.capbreton_next_rain","rain_level_40min")[0] =='1' %}
+          {% if states['sensor.capbreton_next_rain'].attributes.rain_level_40min == 1 %}
             35
-          {% elif state_attr("sensor.capbreton_next_rain","rain_level_40min")[0] =='2' %}
+          {% elif states['sensor.capbreton_next_rain'].attributes.rain_level_40min == 2 %}
             36
-          {% elif state_attr("sensor.capbreton_next_rain","rain_level_40min")[0] =='3' %}
+          {% elif states['sensor.capbreton_next_rain'].attributes.rain_level_40min == 3 %}
             37
-          {% elif state_attr("sensor.capbreton_next_rain","rain_level_40min")[0] =='4' %}
+          {% elif states['sensor.capbreton_next_rain'].attributes.rain_level_40min == 4 %}
             38
           {% else %}
             34
@@ -438,13 +439,13 @@ sensor:
     
       pluis_45mn:
        value_template: >-
-          {% if state_attr("sensor.capbreton_next_rain","rain_level_45min")[0] =='1' %}
+          {% if states['sensor.capbreton_next_rain'].attributes.rain_level_45min == 1 %}
             35
-          {% elif state_attr("sensor.capbreton_next_rain","rain_level_45min")[0] =='2' %}
+          {% elif states['sensor.capbreton_next_rain'].attributes.rain_level_45min == 2 %}
             36
-          {% elif state_attr("sensor.capbreton_next_rain","rain_level_45min")[0] =='3' %}
+          {% elif states['sensor.capbreton_next_rain'].attributes.rain_level_45min == 3 %}
             37
-          {% elif state_attr("sensor.capbreton_next_rain","rain_level_45min")[0] =='4' %}
+          {% elif states['sensor.capbreton_next_rain'].attributes.rain_level_45min == 4 %}
             38
           {% else %}
             34
@@ -454,13 +455,13 @@ sensor:
 
       pluis_50mn:
        value_template: >-
-          {% if state_attr("sensor.capbreton_next_rain","rain_level_50min")[0] =='1' %}
+          {% if states['sensor.capbreton_next_rain'].attributes.rain_level_50min == 1 %}
             35
-          {% elif state_attr("sensor.capbreton_next_rain","rain_level_50min")[0] =='2' %}
+          {% elif states['sensor.capbreton_next_rain'].attributes.rain_level_50min == 2 %}
             36
-          {% elif state_attr("sensor.capbreton_next_rain","rain_level_50min")[0] =='3' %}
+          {% elif states['sensor.capbreton_next_rain'].attributes.rain_level_50min == 3 %}
             37
-          {% elif state_attr("sensor.capbreton_next_rain","rain_level_50min")[0] =='4' %}
+          {% elif states['sensor.capbreton_next_rain'].attributes.rain_level_50min == 4 %}
             38
           {% else %}
             34
@@ -470,13 +471,13 @@ sensor:
     
       pluis_55mn:
        value_template: >-
-          {% if state_attr("sensor.capbreton_next_rain","rain_level_55min")[0] =='1' %}
+          {% if states['sensor.capbreton_next_rain'].attributes.rain_level_55min == 1 %}
             35
-          {% elif state_attr("sensor.capbreton_next_rain","rain_level_55min")[0] =='2' %}
+          {% elif states['sensor.capbreton_next_rain'].attributes.rain_level_55min == 2 %}
             36
-          {% elif state_attr("sensor.capbreton_next_rain","rain_level_55min")[0] =='3' %}
+          {% elif states['sensor.capbreton_next_rain'].attributes.rain_level_55min == 3 %}
             37
-          {% elif state_attr("sensor.capbreton_next_rain","rain_level_55min")[0] =='4' %}
+          {% elif states['sensor.capbreton_next_rain'].attributes.rain_level_55min == 4 %}
             38
           {% else %}
             34
