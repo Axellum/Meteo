@@ -285,85 +285,89 @@ sensor:
              
  - platform: template
    sensors:
-
       pluis_0mn:
        value_template: >-
           {% if states['sensor.capbreton_next_rain'].attributes.rain_level_0min == 1 %}
-            35
+            79
           {% elif states['sensor.capbreton_next_rain'].attributes.rain_level_0min == 2 %}
-            36
+            80
           {% elif states['sensor.capbreton_next_rain'].attributes.rain_level_0min == 3 %}
-            37
+            81
           {% elif states['sensor.capbreton_next_rain'].attributes.rain_level_0min == 4 %}
-            38
+            82
           {% else %}
-            34
+            78
           {% endif %}
        friendly_name: pluis_0mn
 
+
     
-    
+ - platform: template
+   sensors:
       pluis_5mn:
        value_template: >-
           {% if states['sensor.capbreton_next_rain'].attributes.rain_level_5min == 1 %}
-            35
+            79
           {% elif states['sensor.capbreton_next_rain'].attributes.rain_level_5min == 2 %}
-            36
+            80
           {% elif states['sensor.capbreton_next_rain'].attributes.rain_level_5min == 3 %}
-            37
+            81
           {% elif states['sensor.capbreton_next_rain'].attributes.rain_level_5min == 4 %}
-            38
+            82
           {% else %}
-            34
+            78
           {% endif %}
        friendly_name: pluis_5mn
 
-
+ - platform: template
+   sensors:
       pluis_10mn:
        value_template: >-
           {% if states['sensor.capbreton_next_rain'].attributes.rain_level_10min == 1 %}
-            35
+            79
           {% elif states['sensor.capbreton_next_rain'].attributes.rain_level_10min == 2 %}
-            36
+            80
           {% elif states['sensor.capbreton_next_rain'].attributes.rain_level_10min == 3 %}
-            37
+            81
           {% elif states['sensor.capbreton_next_rain'].attributes.rain_level_10min == 4 %}
-            38
+            82
           {% else %}
-            34
+            78
           {% endif %}
        friendly_name: pluis_10mn
 
-    
+ - platform: template
+   sensors:
       pluis_15mn:
        value_template: >-
           {% if states['sensor.capbreton_next_rain'].attributes.rain_level_15min == 1 %}
-            35
+            79
           {% elif states['sensor.capbreton_next_rain'].attributes.rain_level_15min == 2 %}
-            36
+            80
           {% elif states['sensor.capbreton_next_rain'].attributes.rain_level_15min == 3 %}
-            37
+            81
           {% elif states['sensor.capbreton_next_rain'].attributes.rain_level_15min == 4 %}
-            38
+            82
           {% else %}
-            34
+            78
           {% endif %}
        friendly_name: pluis_15mn
 
 
-
+ - platform: template
+   sensors:
       pluis_20mn:
        value_template: >-
           {% if states['sensor.capbreton_next_rain'].attributes.rain_level_20min == 1 %}
-            35
+            79
           {% elif states['sensor.capbreton_next_rain'].attributes.rain_level_20min == 2 %}
-            36
+            80
           {% elif states['sensor.capbreton_next_rain'].attributes.rain_level_20min == 3 %}
-            37
+            81
           {% elif states['sensor.capbreton_next_rain'].attributes.rain_level_20min == 4 %}
-            38
+            82
           {% else %}
-            34
+            78
           {% endif %}
        friendly_name: pluis_20mn
 
@@ -374,113 +378,123 @@ sensor:
       pluis_25mn:
        value_template: >-
           {% if states['sensor.capbreton_next_rain'].attributes.rain_level_25min == 1 %}
-            35
+            79
           {% elif states['sensor.capbreton_next_rain'].attributes.rain_level_25min == 2 %}
-            36
+            80
           {% elif states['sensor.capbreton_next_rain'].attributes.rain_level_25min == 3 %}
-            37
+            81
           {% elif states['sensor.capbreton_next_rain'].attributes.rain_level_25min == 4 %}
-            38
+            82
           {% else %}
-            34
+            78
           {% endif %}
        friendly_name: pluis_25mn
 
-
+ - platform: template
+   sensors:
       pluis_30mn:
        value_template: >-
           {% if states['sensor.capbreton_next_rain'].attributes.rain_level_30min == 1 %}
-            35
+            79
           {% elif states['sensor.capbreton_next_rain'].attributes.rain_level_30min == 2  %}
-            36
+            80
           {% elif states['sensor.capbreton_next_rain'].attributes.rain_level_30min == 3 %}
-            37
+            81
           {% elif states['sensor.capbreton_next_rain'].attributes.rain_level_30min == 4 %}
-            38
+            82
           {% else %}
-            34
+            78
           {% endif %}
        friendly_name: pluis_30mn
 
     
-    
+ - platform: template
+   sensors:
       pluis_35mn:
        value_template: >-
           {% if states['sensor.capbreton_next_rain'].attributes.rain_level_35min == 1 %}
-            35
+            79
           {% elif states['sensor.capbreton_next_rain'].attributes.rain_level_35min == 2 %}
-            36
+            80
           {% elif states['sensor.capbreton_next_rain'].attributes.rain_level_35min == 3 %}
-            37
+            81
           {% elif states['sensor.capbreton_next_rain'].attributes.rain_level_35min == 4 %}
-            38
+            82
           {% else %}
-            34
+            78
           {% endif %}
        friendly_name: pluis_35mn
 
 
+ - platform: template
+   sensors:
+    
       pluis_40mn:
        value_template: >-
           {% if states['sensor.capbreton_next_rain'].attributes.rain_level_40min == 1 %}
-            35
+            79
           {% elif states['sensor.capbreton_next_rain'].attributes.rain_level_40min == 2 %}
-            36
+            80
           {% elif states['sensor.capbreton_next_rain'].attributes.rain_level_40min == 3 %}
-            37
+            81
           {% elif states['sensor.capbreton_next_rain'].attributes.rain_level_40min == 4 %}
-            38
+            82
           {% else %}
-            34
+            78
           {% endif %}
        friendly_name: pluis_40mn
 
     
-    
+ - platform: template
+   sensors:
       pluis_45mn:
        value_template: >-
           {% if states['sensor.capbreton_next_rain'].attributes.rain_level_45min == 1 %}
-            35
+            78
           {% elif states['sensor.capbreton_next_rain'].attributes.rain_level_45min == 2 %}
-            36
+            79
           {% elif states['sensor.capbreton_next_rain'].attributes.rain_level_45min == 3 %}
-            37
+            81
           {% elif states['sensor.capbreton_next_rain'].attributes.rain_level_45min == 4 %}
-            38
+            82
           {% else %}
-            34
+            78
           {% endif %}
        friendly_name: pluis_45mn
 
 
+    
+ - platform: template
+   sensors:
       pluis_50mn:
        value_template: >-
           {% if states['sensor.capbreton_next_rain'].attributes.rain_level_50min == 1 %}
-            35
+            79
           {% elif states['sensor.capbreton_next_rain'].attributes.rain_level_50min == 2 %}
-            36
+            80
           {% elif states['sensor.capbreton_next_rain'].attributes.rain_level_50min == 3 %}
-            37
+            81
           {% elif states['sensor.capbreton_next_rain'].attributes.rain_level_50min == 4 %}
-            38
+            82
           {% else %}
-            34
+            78
           {% endif %}
        friendly_name: pluis_50mn
 
-    
+ - platform: template
+   sensors:
       pluis_55mn:
        value_template: >-
           {% if states['sensor.capbreton_next_rain'].attributes.rain_level_55min == 1 %}
-            35
+            79
           {% elif states['sensor.capbreton_next_rain'].attributes.rain_level_55min == 2 %}
-            36
+            80
           {% elif states['sensor.capbreton_next_rain'].attributes.rain_level_55min == 3 %}
-            37
+            81
           {% elif states['sensor.capbreton_next_rain'].attributes.rain_level_55min == 4 %}
-            38
+            82
           {% else %}
-            34
+            78
           {% endif %}
        friendly_name: pluis_55mn
 
@@ -521,37 +535,78 @@ sensor:
           {% endif %}
       friendly_name: Today weather forecast
 
+
  - platform: template
    sensors:
       today_icon:
        value_template: >-
       
-          {% if is_state("sensor.capbreton_weather", 'Jour clair') %}
-            12
-          {% elif is_state("sensor.capbreton_weather", 'Nuit claire') %}
-            3
-          {% elif is_state("sensor.capbreton_weather", 'Pluie') %}
-            7
+          {% if is_state("sensor.capbreton_weather", 'Nuit claire') %}
+            41
+          {% elif is_state("sensor.capbreton_weather", 'Très nuageux') %}
+            37
+          {% elif is_state("sensor.capbreton_weather", 'Brume') %}
+            41
+          {% elif is_state("sensor.capbreton_weather", 'bancs de brouillard') %}
+            56
+          {% elif is_state("sensor.capbreton_weather", 'Brouillard givrant') %}
+            63 
+          {% elif is_state("sensor.capbreton_weather", 'Risque de grêle') %}
+            60
+          {% elif is_state("sensor.capbreton_weather", 'Risque d orages') %}
+            64
+          {% elif is_state("sensor.capbreton_weather", 'Orages') %}
+            65
+          {% elif is_state("sensor.capbreton_weather", 'Pluie orageuses') %}
+            65
+          {% elif is_state("sensor.capbreton_weather", 'Pluies orageuses') %}
+            65
+          {% elif is_state("sensor.capbreton_weather", 'Averses orageuses') %}
+            64
+          {% elif is_state("sensor.capbreton_weather", 'Ciel voilé') %}
+            67
+          {% elif is_state("sensor.capbreton_weather", 'Ciel voilé nuit') %}
+            66
+          {% elif is_state("sensor.capbreton_weather", 'Éclaircies') %}
+            39
+          {% elif is_state("sensor.capbreton_weather", 'Pluie forte') %}
+            50 
+          {% elif is_state("sensor.capbreton_weather", 'Bruine') %}
+            67
+          {% elif is_state("sensor.capbreton_weather", 'Bruine / Pluie faible') %}
+            69
+          {% elif is_state("sensor.capbreton_weather", 'Pluie faible') %}
+            48
+          {% elif is_state("sensor.capbreton_weather", 'Pluies éparses / Rares averses') %}
+            48
           {% elif is_state("sensor.capbreton_weather", 'Pluies éparses') %}
-            7
+            48
           {% elif is_state("sensor.capbreton_weather", 'Rares averses') %}
-            7 
+            48
+          {% elif is_state("sensor.capbreton_weather", 'Pluie / Averses') %}
+            44
+          {% elif is_state("sensor.capbreton_weather", 'Averses') %}
+            44
+          {% elif is_state("sensor.capbreton_weather", 'Pluie') %}
+            43
+          {% elif is_state("sensor.capbreton_weather", 'Neige / Averses de neige') %}
+            57 
           {% elif is_state("sensor.capbreton_weather", 'Neige') %}
-            6
-          {% elif is_state("sensor.capbreton_weather", 'Neige fondue') %}
-            11
-          {% elif is_state("sensor.capbreton_weather", 'Vent') %}
-            14
-          {% elif is_state("sensor.capbreton_weather", 'Brouillard') %}
-            9
-          {% elif is_state("sensor.capbreton_weather", 'Nuageux') %}
-            5
-          {% elif is_state("sensor.capbreton_weather", 'Jour partiellement nuageux') %}
-            8
-          {% elif is_state("sensor.capbreton_weather", 'Partiellement nuageux-nuit') %}
-            4
+            58
+          {% elif is_state("sensor.capbreton_weather", 'Averses de neige') %}
+            57
+          {% elif is_state("sensor.capbreton_weather", 'Neige forte') %}
+            58
+          {% elif is_state("sensor.capbreton_weather", 'Quelques flocons') %}
+            57
+          {% elif is_state("sensor.capbreton_weather", 'Pluie et neige') %}
+            57
+          {% elif is_state("sensor.capbreton_weather", 'Pluie verglaçante') %}
+            77
+          {% elif is_state("sensor.capbreton_weather", 'Ensoleillé') %}
+            75
           {% else %}
-            33
+            55
           {% endif %}
        friendly_name: meteo france
 
@@ -562,77 +617,83 @@ sensor:
       value_template: >-
       
           {% if is_state("sensor.dark_sky_current_text", 'Clear') %}
-            21
+            7
           {% elif is_state("sensor.dark_sky_current_text", 'Cloudy') %}
-            18
+            3
           {% elif is_state("sensor.dark_sky_current_text", 'Foggy') %}
-            18
+            4
           {% elif is_state("sensor.dark_sky_current_text", 'Hailing') %}
-            19
+            8
           {% elif is_state("sensor.dark_sky_current_text", 'lightning') %}
-            26
+            28
           {% elif is_state("sensor.dark_sky_current_text", 'Partly Cloudy') %}
-            23
+            6
           {% elif is_state("sensor.dark_sky_current_text", 'Rain') %}
-            22
+            10
           {% elif is_state("sensor.dark_sky_current_text", 'Snowy') %}
-            19
+            23
           {% elif is_state("sensor.dark_sky_current_text", 'Windy') %}
-            27
+            13
           {% else %}
-            25
+            2
           {% endif %}
       friendly_name: 2 weather forecast1
 
+
+ - platform: template
+   sensors:
      today_icon2:
       value_template: >-
       
           {% if is_state("sensor.dark_sky_current_text_dem", 'Clear') %}
-            21
+            7
           {% elif is_state("sensor.dark_sky_current_text_dem", 'Cloudy') %}
-            18
+            3
           {% elif is_state("sensor.dark_sky_current_text_dem", 'Foggy') %}
-            18
+            4
           {% elif is_state("sensor.dark_sky_current_text_dem", 'Hailing') %}
-            19
+            8
           {% elif is_state("sensor.dark_sky_current_text_dem", 'lightning') %}
-            26
+            28
           {% elif is_state("sensor.dark_sky_current_text_dem", 'Partly Cloudy') %}
-            23
+            6
           {% elif is_state("sensor.dark_sky_current_text_dem", 'Rain') %}
-            22
+            10
           {% elif is_state("sensor.dark_sky_current_text_dem", 'Snowy') %}
-            19
+            23
           {% elif is_state("sensor.dark_sky_current_text_dem", 'Windy') %}
-            27
+            13
           {% else %}
-            25
+            2
           {% endif %}
       friendly_name: 2 weather forecast2
 
+
+ - platform: template
+   sensors:
      today_icon3:
       value_template: >-
       
           {% if is_state("sensor.dark_sky_current_text_3j", 'Clear') %}
-            21
+            7
           {% elif is_state("sensor.dark_sky_current_text_3j", 'Cloudy') %}
-            18
+            3
           {% elif is_state("sensor.dark_sky_current_text_3j", 'Foggy') %}
-            18
+            4
           {% elif is_state("sensor.dark_sky_current_text_3j", 'Hailing') %}
-            19
+            8
           {% elif is_state("sensor.dark_sky_current_text_3j", 'lightning') %}
-            26
+            28
           {% elif is_state("sensor.dark_sky_current_text_3j", 'Partly Cloudy') %}
-            23
+            6
           {% elif is_state("sensor.dark_sky_current_text_3j", 'Rain') %}
-            22
+            10
           {% elif is_state("sensor.dark_sky_current_text_3j", 'Snowy') %}
-            19
+            23
           {% elif is_state("sensor.dark_sky_current_text_3j", 'Windy') %}
-            27
+            13
           {% else %}
-            25
+            2
           {% endif %}
       friendly_name: 2 weather forecast3
 
