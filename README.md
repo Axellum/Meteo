@@ -4,6 +4,8 @@
 
 Affichage météo avec interaction sur les objets Home assistant:
 
+[![ESPHome Logo](http://axellum.free.fr/presentationmeteo.jpg)]()
+
     Matériel:
         Écran Nextion NX4832T035 (3.5p) à 30€
         Un ESP32 (actuellement sur ESP8266 mais les ESP32 devrait être mieux adapté) 5 - 7€
