@@ -238,7 +238,7 @@ sensor:
              {% endif %}
       dark_sky_current_text_3j:
         value_template: >-
-             {% if is_state("sensor.dark_sky_icon","clear-day") %} Clear 
+             {% if is_state("sensor.dark_sky_icon_3d","clear-day") %} Clear 
              {% elif is_state("sensor.dark_sky_icon_3d","clear-night") %} Clear 
              {% elif is_state("sensor.dark_sky_icon_3d","rain") %} Rain
              {% elif is_state("sensor.dark_sky_icon_3d","snow") %} Snowy
