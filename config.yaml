@@ -812,13 +812,15 @@ sensor:
           {% else %}
             96
                 {%- endif -%}
-# on récupére en fonction de l'alerte les différentes causes pour les affiché:
+
+ # Si l'alerte est rouge, on ne prend que les type d alerte en rouge les {{}} agrége les données
+ # states.sensor.capbreton_weather_alert.attributes['Vagues-submersion'] permet de passer les caractére spéciaux et espace
  - platform: template
    sensors:
      text_alert:
       value_template: >-
        {% set alert = states('sensor.alerte_coul') | float %}
-# Si l'alerte est rouge, on ne prend que les type d alerte en rouge les {{}} agrége les données
+
         {% if is_state("sensor.capbreton_weather_alert", 'Rouge') %}
          {% if states['sensor.capbreton_weather_alert'].attributes.Vent_violent == 'Rouge' %}
           {{'Vent violent; '}}
@@ -848,7 +850,7 @@ sensor:
          {% if states.sensor.capbreton_weather_alert.attributes['Vagues-submersion'] == 'Rouge' %}
            {{'Vagues-submersion; '}}
          {% endif %}
-# Si l'alerte est orange, on ne prend que les type d alerte en orange les {{}} agrége les données
+
         {% elif is_state("sensor.capbreton_weather_alert", 'Orange') %}
          {% if states['sensor.capbreton_weather_alert'].attributes.Vent_violent == 'Orange' %}
           {{'Vent violent; '}}
@@ -877,7 +879,7 @@ sensor:
          {% if states.sensor.capbreton_weather_alert.attributes['Vagues-submersion'] == 'Orange' %}
            {{'Vagues-submersion; '}}
          {% endif %}
-# Si l'alerte est jaune, on ne prend que les type d alerte en jaune les {{}} agrége les données
+
         {% elif is_state("sensor.capbreton_weather_alert", 'Jaune') %}
          {% if states['sensor.capbreton_weather_alert'].attributes.Vent_violent == 'Jaune' %}
           {{'Vent violent; '}}
