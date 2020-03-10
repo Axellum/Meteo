@@ -337,7 +337,7 @@ sensor:
 
 # Calcul pour transformé le pourcentage en degres pour les jauges pour 0=318° ; 100%=225° ; ((360-318)+225)/100=2.67
 # Donc 1%=2.67° ; Soit x le pencentage à afficher et y l'angle de l'aiguille:
-# 42°/2.67 = 15.73% ; si x > 15.73 => y=(x*2.7)+(318-360) ; sinon x < 15.73 alors y=(x*2.7)+360
+# 42°/2.67 = 15.73% ; si x > 15.73 => y=(x*2.7)+(318-360) ; sinon x < 15.73 alors y=(x*2.7)+318
  - platform: template
    sensors:
       gauge_disque:
