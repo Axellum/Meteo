@@ -19,7 +19,7 @@ sensor:
               {% if is_state("sensor.capbreton_next_rain", 'No rain') %}
                 Pas de pluie.
               {% else %}
-                {{ 'Averse dans ' }}{{ pluis }} mn
+                {{ 'Averse dans ' }}{{ pluie }} mn
               {% endif %}
       friendly_name: Pluie
                 
