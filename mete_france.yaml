@@ -17,11 +17,11 @@ sensor:
       value_template: >-
              {% set pluis = states('sensor.capbreton_next_rain') %}
               {% if is_state("sensor.capbreton_next_rain", 'No rain') %}
-                Pas de pluis.
+                Pas de pluie.
               {% else %}
                 {{ 'Averse dans ' }}{{ pluis }} mn
               {% endif %}
-      friendly_name: Pluis
+      friendly_name: Pluie
                 
  # Si l'alerte est rouge, on ne prend que les type d alerte en rouge les {{}} agrége les données
  # states.sensor.capbreton_weather_alert.attributes['Vagues-submersion'] permet de passer les caractére spéciaux et espace
