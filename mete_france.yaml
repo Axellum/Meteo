@@ -2,7 +2,7 @@
 
 # integration de meteo france
 meteo_france:
-- city: '40130'
+- city: '40130' # votre code postal
 
 
   
