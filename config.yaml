@@ -53,13 +53,8 @@ pi_hole:
 
 frontend:
   themes: !include_dir_merge_named themes
-  
+ 
 # --------------- Partie sensor----------------------------------------------------------------
-sensor:
-# ajout automatique rflink
- - platform: rflink
-   automatic_add: true
-
 # ajout des capteur de darksky sur 4 jours et des capteurs util (ou pas)
  - platform: darksky
    api_key: 729171b239da1ade4b465769502588b9
@@ -567,6 +562,19 @@ sensor:
           {% endif %}
        friendly_name: pluis_55mn
 
+# texte prevision de la prochaine pluis
+ - platform: template
+   sensors:
+     pluis_proch:
+      value_template: >-
+             {% set pluis = states('sensor.capbreton_next_rain') %}
+              {% if is_state("sensor.capbreton_next_rain", 'No rain') %}
+                Pas de pluie.
+              {% else %}
+                {{ 'Averse dans ' }}{{ pluie }} mn
+              {% endif %}
+      friendly_name: Pluie
+
 # Icone du jour darksky non utilisé - Merci à Paradis Artificiels
  - platform: template
    sensors:
@@ -751,7 +759,7 @@ sensor:
           {% endif %}
        friendly_name: meteo france
 
-# Alerte meteo france / connection
+# Alerte meteo
 
  - platform: template
    sensors:
@@ -812,106 +820,198 @@ sensor:
           {% else %}
             96
                 {%- endif -%}
-
+                
  # Si l'alerte est rouge, on ne prend que les type d alerte en rouge les {{}} agrége les données
  # states.sensor.capbreton_weather_alert.attributes['Vagues-submersion'] permet de passer les caractére spéciaux et espace
  - platform: template
    sensors:
      text_alert:
       value_template: >-
-       {% set alert = states('sensor.alerte_coul') | float %}
-
         {% if is_state("sensor.capbreton_weather_alert", 'Rouge') %}
          {% if states['sensor.capbreton_weather_alert'].attributes.Vent_violent == 'Rouge' %}
-          {{'Vent violent; '}}
+          {{'Vent violent '}}
          {% endif %}
          {% if states['sensor.capbreton_weather_alert'].attributes.Inondation == 'Rouge' %}
-           {{'Inondation; '}}
+           {{'Inondation '}}
          {% endif %}
          {% if states['sensor.capbreton_weather_alert'].attributes.Canicule == 'Rouge' %}
            {{'Canicule; '}}
          {% endif %}
          {% if states['sensor.capbreton_weather_alert'].attributes.Avalanches == 'Rouge' %}
-           {{'Avalanches; '}}
+           {{'Avalanches '}}
          {% endif %}
          {% if states['sensor.capbreton_weather_alert'].attributes.Orages == 'Rouge' %}
-           {{'Orages; '}}
+           {{'Orages '}}
          {% endif %}
-         #Les - posaient pb avec l ecriture classique
          {% if states.sensor.capbreton_weather_alert.attributes['Pluie-innodation'] == 'Rouge' %}
-           {{'Pluie-innodation; '}}
+           {{'Pluie et innodation '}}
          {% endif %}
          {% if states.sensor.capbreton_weather_alert.attributes['Neige-verglas'] == 'Rouge' %}
-           {{'Neige-verglas; '}}
+           {{'Neige et verglas '}}
          {% endif %}
          {% if states.sensor.capbreton_weather_alert.attributes['Grand-froid'] == 'Rouge' %}
-           {{'Grand-froid; '}}
+           {{'Grand froid '}}
          {% endif %}
          {% if states.sensor.capbreton_weather_alert.attributes['Vagues-submersion'] == 'Rouge' %}
-           {{'Vagues-submersion; '}}
+           {{'Vagues et submersion '}}
          {% endif %}
-
         {% elif is_state("sensor.capbreton_weather_alert", 'Orange') %}
          {% if states['sensor.capbreton_weather_alert'].attributes.Vent_violent == 'Orange' %}
-          {{'Vent violent; '}}
+          {{'Vent violent '}}
          {% endif %}
          {% if states['sensor.capbreton_weather_alert'].attributes.Inondation == 'Orange' %}
-           {{'Inondation; '}}
+           {{'Inondation '}}
          {% endif %}
          {% if states['sensor.capbreton_weather_alert'].attributes.Canicule == 'Orange' %}
-           {{'Canicule; '}}
+           {{'Canicule '}}
          {% endif %}
          {% if states['sensor.capbreton_weather_alert'].attributes.Avalanches == 'Orange' %}
-           {{'Avalanches; '}}
+           {{'Avalanches '}}
          {% endif %}
          {% if states['sensor.capbreton_weather_alert'].attributes.Orages == 'Orange' %}
-           {{'Orages; '}}
+           {{'Orages '}}
          {% endif %}
          {% if states.sensor.capbreton_weather_alert.attributes['Pluie-innodation'] == 'Orange' %}
-           {{'Pluie-innodation; '}}
+           {{'Pluie et innodation '}}
          {% endif %}
          {% if states.sensor.capbreton_weather_alert.attributes['Neige-verglas'] == 'Orange' %}
-           {{'Neige-verglas; '}}
+           {{'Neige et verglas '}}
          {% endif %}
          {% if states.sensor.capbreton_weather_alert.attributes['Grand-froid'] == 'Orange' %}
-           {{'Grand-froid; '}}
+           {{'Grand froid '}}
          {% endif %}
          {% if states.sensor.capbreton_weather_alert.attributes['Vagues-submersion'] == 'Orange' %}
-           {{'Vagues-submersion; '}}
+           {{'Vagues et submersion '}}
          {% endif %}
-
         {% elif is_state("sensor.capbreton_weather_alert", 'Jaune') %}
          {% if states['sensor.capbreton_weather_alert'].attributes.Vent_violent == 'Jaune' %}
-          {{'Vent violent; '}}
+          {{'Vent violent '}}
          {% endif %}
          {% if states['sensor.capbreton_weather_alert'].attributes.Inondation == 'Jaune' %}
-           {{'Inondation; '}}
+           {{'Inondation '}}
          {% endif %}
          {% if states['sensor.capbreton_weather_alert'].attributes.Canicule == 'Jaune' %}
-           {{'Canicule; '}}
+           {{'Canicule '}}
          {% endif %}
          {% if states['sensor.capbreton_weather_alert'].attributes.Avalanches == 'Jaune' %}
-           {{'Avalanches; '}}
+           {{'Avalanches '}}
          {% endif %}
          {% if states['sensor.capbreton_weather_alert'].attributes.Orages == 'Jaune' %}
-           {{'Orages; '}}
+           {{'Orages '}}
          {% endif %}
          {% if states.sensor.capbreton_weather_alert.attributes['Pluie-innodation'] == 'Jaune' %}
-           {{'Pluie-innodation; '}}
+           {{'Pluie et innodation '}}
          {% endif %}
          {% if states.sensor.capbreton_weather_alert.attributes['Neige-verglas'] == 'Jaune' %}
-           {{'Neige-verglas; '}}
+           {{'Neige et verglas '}}
          {% endif %}
          {% if states.sensor.capbreton_weather_alert.attributes['Grand-froid'] == 'Jaune' %}
-           {{'Grand-froid; '}}
+           {{'Grand froid '}}
          {% endif %}
          {% if states.sensor.capbreton_weather_alert.attributes['Vagues-submersion'] == 'Jaune' %}
-           {{'Vagues-submersion; '}}
+           {{'Vagues et submersion '}}
          {% endif %}
         {% else %}
-         rien
+         Rien.
         {% endif %}
       friendly_name: text alert
+      
+ - platform: template
+   sensors:
+     text_alert_love:
+      value_template: >-
+       {% set alert = states('sensor.alerte_coul') | float %}
+        {% if is_state("sensor.capbreton_weather_alert", 'Rouge') %}
+        -
+         {% if states['sensor.capbreton_weather_alert'].attributes.Vent_violent == 'Rouge' %}
+          {{' Vent violent -'}}
+         {% endif %}
+         {% if states['sensor.capbreton_weather_alert'].attributes.Inondation == 'Rouge' %}
+           {{' Inondation -'}}
+         {% endif %}
+         {% if states['sensor.capbreton_weather_alert'].attributes.Canicule == 'Rouge' %}
+           {{' Canicule; -'}}
+         {% endif %}
+         {% if states['sensor.capbreton_weather_alert'].attributes.Avalanches == 'Rouge' %}
+           {{' Avalanches -'}}
+         {% endif %}
+         {% if states['sensor.capbreton_weather_alert'].attributes.Orages == 'Rouge' %}
+           {{' Orages -'}}
+         {% endif %}
+         {% if states.sensor.capbreton_weather_alert.attributes['Pluie-innodation'] == 'Rouge' %}
+           {{' Pluie-innodation -'}}
+         {% endif %}
+         {% if states.sensor.capbreton_weather_alert.attributes['Neige-verglas'] == 'Rouge' %}
+           {{' Neige-verglas -'}}
+         {% endif %}
+         {% if states.sensor.capbreton_weather_alert.attributes['Grand-froid'] == 'Rouge' %}
+           {{' Grand-froid -'}}
+         {% endif %}
+         {% if states.sensor.capbreton_weather_alert.attributes['Vagues-submersion'] == 'Rouge' %}
+           {{' Vagues-submersion -'}}
+         {% endif %}
+        {% elif is_state("sensor.capbreton_weather_alert", 'Orange') %}
+        -
+         {% if states['sensor.capbreton_weather_alert'].attributes.Vent_violent == 'Orange' %}
+          {{' Vent violent -'}}
+         {% endif %}
+         {% if states['sensor.capbreton_weather_alert'].attributes.Inondation == 'Orange' %}
+           {{' Inondation -'}}
+         {% endif %}
+         {% if states['sensor.capbreton_weather_alert'].attributes.Canicule == 'Orange' %}
+           {{' Canicule -'}}
+         {% endif %}
+         {% if states['sensor.capbreton_weather_alert'].attributes.Avalanches == 'Orange' %}
+           {{' Avalanches -'}}
+         {% endif %}
+         {% if states['sensor.capbreton_weather_alert'].attributes.Orages == 'Orange' %}
+           {{' Orages -'}}
+         {% endif %}
+         {% if states.sensor.capbreton_weather_alert.attributes['Pluie-innodation'] == 'Orange' %}
+           {{' Pluie-innodation -'}}
+         {% endif %}
+         {% if states.sensor.capbreton_weather_alert.attributes['Neige-verglas'] == 'Orange' %}
+           {{' Neige-verglas -'}}
+         {% endif %}
+         {% if states.sensor.capbreton_weather_alert.attributes['Grand-froid'] == 'Orange' %}
+           {{' Grand-froid -'}}
+         {% endif %}
+         {% if states.sensor.capbreton_weather_alert.attributes['Vagues-submersion'] == 'Orange' %}
+           {{' Vagues-submersion -'}}
+         {% endif %}
+        {% elif is_state("sensor.capbreton_weather_alert", 'Jaune') %}
+        -
+         {% if states['sensor.capbreton_weather_alert'].attributes.Vent_violent == 'Jaune' %}
+          {{' Vent violent -'}}
+         {% endif %}
+         {% if states['sensor.capbreton_weather_alert'].attributes.Inondation == 'Jaune' %}
+           {{' Inondation -'}}
+         {% endif %}
+         {% if states['sensor.capbreton_weather_alert'].attributes.Canicule == 'Jaune' %}
+           {{' Canicule -'}}
+         {% endif %}
+         {% if states['sensor.capbreton_weather_alert'].attributes.Avalanches == 'Jaune' %}
+           {{' Avalanches -'}}
+         {% endif %}
+         {% if states['sensor.capbreton_weather_alert'].attributes.Orages == 'Jaune' %}
+           {{' Orages -'}}
+         {% endif %}
+         {% if states.sensor.capbreton_weather_alert.attributes['Pluie-innodation'] == 'Jaune' %}
+           {{' Pluie-innodation -'}}
+         {% endif %}
+         {% if states.sensor.capbreton_weather_alert.attributes['Neige-verglas'] == 'Jaune' %}
+           {{' Neige-verglas -'}}
+         {% endif %}
+         {% if states.sensor.capbreton_weather_alert.attributes['Grand-froid'] == 'Jaune' %}
+           {{' Grand-froid -'}}
+         {% endif %}
+         {% if states.sensor.capbreton_weather_alert.attributes['Vagues-submersion'] == 'Jaune' %}
+           {{' Vagues-submersion -'}}
+         {% endif %}
+        {% else %}
+         Rien.
+        {% endif %}
+      friendly_name: text alert love
 
 # Presence pour eteidre l ecran - Merci à Paradis Artificiels
 binary_sensor:
