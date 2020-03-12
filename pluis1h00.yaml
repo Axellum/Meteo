@@ -1,0 +1,404 @@
+# nessecite l'installation du pluing hacs button-card, son intégration à loveui, et bien sur meteo france dans votre fichier de configuration
+# et merci à weado qui as partager son code.
+# remplacer capbreton par votre ville, copié le code dans un manual card ou dans votre code yaml de loveUI
+     
+     - cards:
+          - color_type: card
+            entity: sensor.capbreton_next_rain
+            name: Now
+            show_icon: false
+            show_state: false
+            state:
+              - color: 'rgb(204, 217, 255)'
+                operator: template
+                value: |
+                  [[[
+                    return states['sensor.capbreton_next_rain'].attributes
+                    && (states['sensor.capbreton_next_rain'].attributes.rain_level_0min == 2)
+                  ]]]
+              - color: 'rgb(128, 159, 255)'
+                operator: template
+                value: |
+                  [[[
+                    return states['sensor.capbreton_next_rain'].attributes
+                    && (states['sensor.capbreton_next_rain'].attributes.rain_level_0min == 3)
+                  ]]]
+              - color: 'rgb(51, 102, 255)'
+                operator: template
+                value: |
+                  [[[
+                    return states['sensor.capbreton_next_rain'].attributes
+                    && (states['sensor.capbreton_next_rain'].attributes.rain_level_0min == 4)
+                  ]]]
+              - color: 'rgb(255, 255, 255)'
+                operator: default
+            styles:
+              card:
+                - height: 50px
+            type: 'custom:button-card'
+          - color_type: card
+            entity: sensor.capbreton_next_rain
+            name: 5
+            show_icon: false
+            show_state: false
+            state:
+              - color: 'rgb(204, 217, 255)'
+                operator: template
+                value: |
+                  [[[
+                    return states['sensor.capbreton_next_rain'].attributes
+                    && (states['sensor.capbreton_next_rain'].attributes.rain_level_5min == 2)
+                  ]]]
+              - color: 'rgb(128, 159, 255)'
+                operator: template
+                value: |
+                  [[[
+                    return states['sensor.capbreton_next_rain'].attributes
+                    && (states['sensor.capbreton_next_rain'].attributes.rain_level_5min == 3)
+                  ]]]
+              - color: 'rgb(51, 102, 255)'
+                operator: template
+                value: |
+                  [[[
+                    return states['sensor.capbreton_next_rain'].attributes
+                    && (states['sensor.capbreton_next_rain'].attributes.rain_level_5min == 4)
+                  ]]]
+              - color: 'rgb(255, 255, 255)'
+                operator: default
+            styles:
+              card:
+                - height: 50px
+            type: 'custom:button-card'
+          - color_type: card
+            entity: sensor.capbreton_next_rain
+            name: 10
+            show_icon: false
+            show_state: false
+            state:
+              - color: 'rgb(204, 217, 255)'
+                operator: template
+                value: |
+                  [[[
+                    return states['sensor.capbreton_next_rain'].attributes
+                    && (states['sensor.capbreton_next_rain'].attributes.rain_level_10min == 2)
+                  ]]]
+              - color: 'rgb(128, 159, 255)'
+                operator: template
+                value: |
+                  [[[
+                    return states['sensor.capbreton_next_rain'].attributes
+                    && (states['sensor.capbreton_next_rain'].attributes.rain_level_10min == 3)
+                  ]]]
+              - color: 'rgb(51, 102, 255)'
+                operator: template
+                value: |
+                  [[[
+                    return states['sensor.capbreton_next_rain'].attributes
+                    && (states['sensor.capbreton_next_rain'].attributes.rain_level_10min == 4)
+                  ]]]
+              - color: 'rgb(255, 255, 255)'
+                operator: default
+            styles:
+              card:
+                - height: 50px
+            type: 'custom:button-card'
+          - color_type: card
+            entity: sensor.capbreton_next_rain
+            name: 15
+            show_icon: false
+            show_state: false
+            state:
+              - color: 'rgb(204, 217, 255)'
+                operator: template
+                value: |
+                  [[[
+                    return states['sensor.capbreton_next_rain'].attributes
+                    && (states['sensor.capbreton_next_rain'].attributes.rain_level_15min == 2)
+                  ]]]
+              - color: 'rgb(128, 159, 255)'
+                operator: template
+                value: |
+                  [[[
+                    return states['sensor.capbreton_next_rain'].attributes
+                    && (states['sensor.capbreton_next_rain'].attributes.rain_level_15min == 3)
+                  ]]]
+              - color: 'rgb(51, 102, 255)'
+                operator: template
+                value: |
+                  [[[
+                    return states['sensor.capbreton_next_rain'].attributes
+                    && (states['sensor.capbreton_next_rain'].attributes.rain_level_15min == 4)
+                  ]]]
+              - color: 'rgb(255, 255, 255)'
+                operator: default
+            styles:
+              card:
+                - height: 50px
+            type: 'custom:button-card'
+          - color_type: card
+            entity: sensor.capbreton_next_rain
+            name: 20
+            show_icon: false
+            show_state: false
+            state:
+              - color: 'rgb(204, 217, 255)'
+                operator: template
+                value: |
+                  [[[
+                    return states['sensor.capbreton_next_rain'].attributes
+                    && (states['sensor.capbreton_next_rain'].attributes.rain_level_20min == 2)
+                  ]]]
+              - color: 'rgb(128, 159, 255)'
+                operator: template
+                value: |
+                  [[[
+                    return states['sensor.capbreton_next_rain'].attributes
+                    && (states['sensor.capbreton_next_rain'].attributes.rain_level_20min == 3)
+                  ]]]
+              - color: 'rgb(51, 102, 255)'
+                operator: template
+                value: |
+                  [[[
+                    return states['sensor.capbreton_next_rain'].attributes
+                    && (states['sensor.capbreton_next_rain'].attributes.rain_level_20min == 4)
+                  ]]]
+              - color: 'rgb(255, 255, 255)'
+                operator: default
+            styles:
+              card:
+                - height: 50px
+            type: 'custom:button-card'
+          - color_type: card
+            entity: sensor.capbreton_next_rain
+            name: 25
+            show_icon: false
+            show_state: false
+            state:
+              - color: 'rgb(204, 217, 255)'
+                operator: template
+                value: |
+                  [[[
+                    return states['sensor.capbreton_next_rain'].attributes
+                    && (states['sensor.capbreton_next_rain'].attributes.rain_level_25min == 2)
+                  ]]]
+              - color: 'rgb(128, 159, 255)'
+                operator: template
+                value: |
+                  [[[
+                    return states['sensor.capbreton_next_rain'].attributes
+                    && (states['sensor.capbreton_next_rain'].attributes.rain_level_25min == 3)
+                  ]]]
+              - color: 'rgb(51, 102, 255)'
+                operator: template
+                value: |
+                  [[[
+                    return states['sensor.capbreton_next_rain'].attributes
+                    && (states['sensor.capbreton_next_rain'].attributes.rain_level_25min == 4)
+                  ]]]
+              - color: 'rgb(255, 255, 255)'
+                operator: default
+            styles:
+              card:
+                - height: 50px
+            type: 'custom:button-card'
+          - color_type: card
+            entity: sensor.capbreton_next_rain
+            name: 30
+            show_icon: false
+            show_state: false
+            state:
+              - color: 'rgb(204, 217, 255)'
+                operator: template
+                value: |
+                  [[[
+                    return states['sensor.capbreton_next_rain'].attributes
+                    && (states['sensor.capbreton_next_rain'].attributes.rain_level_30min == 2)
+                  ]]]
+              - color: 'rgb(128, 159, 255)'
+                operator: template
+                value: |
+                  [[[
+                    return states['sensor.capbreton_next_rain'].attributes
+                    && (states['sensor.capbreton_next_rain'].attributes.rain_level_30min == 3)
+                  ]]]
+              - color: 'rgb(51, 102, 255)'
+                operator: template
+                value: |
+                  [[[
+                    return states['sensor.capbreton_next_rain'].attributes
+                    && (states['sensor.capbreton_next_rain'].attributes.rain_level_30min == 4)
+                  ]]]
+              - color: 'rgb(255, 255, 255)'
+                operator: default
+            styles:
+              card:
+                - height: 50px
+            type: 'custom:button-card'
+          - color_type: card
+            entity: sensor.capbreton_next_rain
+            name: 35
+            show_icon: false
+            show_state: false
+            state:
+              - color: 'rgb(204, 217, 255)'
+                operator: template
+                value: |
+                  [[[
+                    return states['sensor.capbreton_next_rain'].attributes
+                    && (states['sensor.capbreton_next_rain'].attributes.rain_level_35min == 2)
+                  ]]]
+              - color: 'rgb(128, 159, 255)'
+                operator: template
+                value: |
+                  [[[
+                    return states['sensor.capbreton_next_rain'].attributes
+                    && (states['sensor.capbreton_next_rain'].attributes.rain_level_35min == 3)
+                  ]]]
+              - color: 'rgb(51, 102, 255)'
+                operator: template
+                value: |
+                  [[[
+                    return states['sensor.capbreton_next_rain'].attributes
+                    && (states['sensor.capbreton_next_rain'].attributes.rain_level_35min == 4)
+                  ]]]
+              - color: 'rgb(255, 255, 255)'
+                operator: default
+            styles:
+              card:
+                - height: 50px
+            type: 'custom:button-card'
+          - color_type: card
+            entity: sensor.capbreton_next_rain
+            name: 40
+            show_icon: false
+            show_state: false
+            state:
+              - color: 'rgb(204, 217, 255)'
+                operator: template
+                value: |
+                  [[[
+                    return states['sensor.capbreton_next_rain'].attributes
+                    && (states['sensor.capbreton_next_rain'].attributes.rain_level_40min == 2)
+                  ]]]
+              - color: 'rgb(128, 159, 255)'
+                operator: template
+                value: |
+                  [[[
+                    return states['sensor.capbreton_next_rain'].attributes
+                    && (states['sensor.capbreton_next_rain'].attributes.rain_level_40min == 3)
+                  ]]]
+              - color: 'rgb(51, 102, 255)'
+                operator: template
+                value: |
+                  [[[
+                    return states['sensor.capbreton_next_rain'].attributes
+                    && (states['sensor.capbreton_next_rain'].attributes.rain_level_40min == 4)
+                  ]]]
+              - color: 'rgb(255, 255, 255)'
+                operator: default
+            styles:
+              card:
+                - height: 50px
+            type: 'custom:button-card'
+          - color_type: card
+            entity: sensor.capbreton_next_rain
+            name: 45
+            show_icon: false
+            show_state: false
+            state:
+              - color: 'rgb(204, 217, 255)'
+                operator: template
+                value: |
+                  [[[
+                    return states['sensor.capbreton_next_rain'].attributes
+                    && (states['sensor.capbreton_next_rain'].attributes.rain_level_45min == 2)
+                  ]]]
+              - color: 'rgb(128, 159, 255)'
+                operator: template
+                value: |
+                  [[[
+                    return states['sensor.capbreton_next_rain'].attributes
+                    && (states['sensor.capbreton_next_rain'].attributes.rain_level_45min == 3)
+                  ]]]
+              - color: 'rgb(51, 102, 255)'
+                operator: template
+                value: |
+                  [[[
+                    return states['sensor.capbreton_next_rain'].attributes
+                    && (states['sensor.capbreton_next_rain'].attributes.rain_level_45min == 4)
+                  ]]]
+              - color: 'rgb(255, 255, 255)'
+                operator: default
+            styles:
+              card:
+                - height: 50px
+            type: 'custom:button-card'
+          - color_type: card
+            entity: sensor.capbreton_next_rain
+            name: 50
+            show_icon: false
+            show_state: false
+            state:
+              - color: 'rgb(204, 217, 255)'
+                operator: template
+                value: |
+                  [[[
+                    return states['sensor.capbreton_next_rain'].attributes
+                    && (states['sensor.capbreton_next_rain'].attributes.rain_level_50min == 2)
+                  ]]]
+              - color: 'rgb(128, 159, 255)'
+                operator: template
+                value: |
+                  [[[
+                    return states['sensor.capbreton_next_rain'].attributes
+                    && (states['sensor.capbreton_next_rain'].attributes.rain_level_50min == 3)
+                  ]]]
+              - color: 'rgb(51, 102, 255)'
+                operator: template
+                value: |
+                  [[[
+                    return states['sensor.capbreton_next_rain'].attributes
+                    && (states['sensor.capbreton_next_rain'].attributes.rain_level_50min == 4)
+                  ]]]
+              - color: 'rgb(255, 255, 255)'
+                operator: default
+            styles:
+              card:
+                - height: 50px
+            type: 'custom:button-card'
+          - color_type: card
+            entity: sensor.capbreton_next_rain
+            name: 55
+            show_icon: false
+            show_state: false
+            state:
+              - color: 'rgb(204, 217, 255)'
+                operator: template
+                value: |
+                  [[[
+                    return states['sensor.capbreton_next_rain'].attributes
+                    && (states['sensor.capbreton_next_rain'].attributes.rain_level_55min == 2)
+                  ]]]
+              - color: 'rgb(128, 159, 255)'
+                operator: template
+                value: |
+                  [[[
+                    return states['sensor.capbreton_next_rain'].attributes
+                    && (states['sensor.capbreton_next_rain'].attributes.rain_level_55min == 3)
+                  ]]]
+              - color: 'rgb(51, 102, 255)'
+                operator: template
+                value: |
+                  [[[
+                    return states['sensor.capbreton_next_rain'].attributes
+                    && (states['sensor.capbreton_next_rain'].attributes.rain_level_55min == 4)
+                  ]]]
+              - color: 'rgb(255, 255, 255)'
+                operator: default
+            styles:
+              card:
+                - height: 50px
+            type: 'custom:button-card'
+        title: Pluie
+        type: horizontal-stack
+        
