@@ -1,0 +1,544 @@
+custom_header:
+  compact_mode: true
+  footer_mode: true
+resources:
+  - type: module
+    url: /community_plugin/custom-header/custom-header.js
+  - type: module
+    url: /community_plugin/weather-card/weather-card.js
+  - type: module
+    url: /community_plugin/button-card/button-card.js
+  - url: /community_plugin/bar-card/bar-card.js
+    type: js
+  - url: /community_plugin/lovelace-card-mod/card-mod.js
+    type: module
+    
+title: Maison
+views:
+  - badges:
+      - entity: binary_sensor.updater
+      - entity: person.axel
+      - entity: sensor.pi_hole_ads_blocked_today
+      - entity: sensor.pi_hole_dns_unique_domains
+      - entity: sensor.pi_hole_dns_queries_today
+      - entity: sensor.pi_hole_dns_unique_clients
+      - entity: sensor.pi_hole_dns_queries_forwarded
+      - entity: sensor.pi_hole_ads_percentage_blocked_today
+      - entity: sensor.pi_hole_dns_queries_cached
+      - entity: sensor.pi_hole_seen_clients
+      - entity: sun.sun
+      - entity: device_tracker.freebox_player
+      - entity: switch.freebox_wifi
+    cards:
+      - entities:
+          - entity: sensor.date_simple
+          - entity: sensor.time
+        type: entities
+      - entities:
+          - entity: sensor.capbreton_uv
+          - entity: sensor.capbreton_freeze_chance
+          - entity: sensor.capbreton_rain_chance
+          - entity: sensor.capbreton_snow_chance
+          - entity: sensor.capbreton_thunder_chance
+          - entity: sensor.capbreton_weather
+          - entity: sensor.pluis_proch
+          - entity: sensor.capbreton_wind_speed
+        type: entities
+      - current: true
+        details: false
+        entity: weather.capbreton
+        forecast: true
+        type: 'custom:weather-card'
+      - entities:
+          - sensor.freebox_upload_speed
+          - sensor.memory_use_percent
+          - sensor.processor_use
+          - sensor.hacs
+          - person.mqtt
+          - sensor.pi_hole_domains_blocked
+        type: entities
+      - entities:
+          - entity: sensor.capbreton_weather_alert
+          - entity: sensor.text_alert_love
+          - entity: sensor.alerte_gel
+          - entity: sensor.alerte_neige
+          - entity: sensor.alerte_orage
+        title: Alerte Météo
+        type: entities
+      - cards:
+          - color_type: card
+            entity: sensor.capbreton_next_rain
+            name: Now
+            show_icon: false
+            show_state: false
+            state:
+              - color: 'rgb(204, 217, 255)'
+                operator: template
+                value: |
+                  [[[
+                    return states['sensor.capbreton_next_rain'].attributes
+                    && (states['sensor.capbreton_next_rain'].attributes.rain_level_0min == 2)
+                  ]]]
+              - color: 'rgb(128, 159, 255)'
+                operator: template
+                value: |
+                  [[[
+                    return states['sensor.capbreton_next_rain'].attributes
+                    && (states['sensor.capbreton_next_rain'].attributes.rain_level_0min == 3)
+                  ]]]
+              - color: 'rgb(51, 102, 255)'
+                operator: template
+                value: |
+                  [[[
+                    return states['sensor.capbreton_next_rain'].attributes
+                    && (states['sensor.capbreton_next_rain'].attributes.rain_level_0min == 4)
+                  ]]]
+              - color: 'rgb(255, 255, 255)'
+                operator: default
+            styles:
+              card:
+                - height: 50px
+            type: 'custom:button-card'
+          - color_type: card
+            entity: sensor.capbreton_next_rain
+            name: 10
+            show_icon: false
+            show_state: false
+            state:
+              - color: 'rgb(204, 217, 255)'
+                operator: template
+                value: |
+                  [[[
+                    return states['sensor.capbreton_next_rain'].attributes
+                    && (states['sensor.capbreton_next_rain'].attributes.rain_level_10min == 2)
+                  ]]]
+              - color: 'rgb(128, 159, 255)'
+                operator: template
+                value: |
+                  [[[
+                    return states['sensor.capbreton_next_rain'].attributes
+                    && (states['sensor.capbreton_next_rain'].attributes.rain_level_10min == 3)
+                  ]]]
+              - color: 'rgb(51, 102, 255)'
+                operator: template
+                value: |
+                  [[[
+                    return states['sensor.capbreton_next_rain'].attributes
+                    && (states['sensor.capbreton_next_rain'].attributes.rain_level_10min == 4)
+                  ]]]
+              - color: 'rgb(255, 255, 255)'
+                operator: default
+            styles:
+              card:
+                - height: 50px
+            type: 'custom:button-card'
+          - color_type: card
+            entity: sensor.capbreton_next_rain
+            name: 20
+            show_icon: false
+            show_state: false
+            state:
+              - color: 'rgb(204, 217, 255)'
+                operator: template
+                value: |
+                  [[[
+                    return states['sensor.capbreton_next_rain'].attributes
+                    && (states['sensor.capbreton_next_rain'].attributes.rain_level_20min == 2)
+                  ]]]
+              - color: 'rgb(128, 159, 255)'
+                operator: template
+                value: |
+                  [[[
+                    return states['sensor.capbreton_next_rain'].attributes
+                    && (states['sensor.capbreton_next_rain'].attributes.rain_level_20min == 3)
+                  ]]]
+              - color: 'rgb(51, 102, 255)'
+                operator: template
+                value: |
+                  [[[
+                    return states['sensor.capbreton_next_rain'].attributes
+                    && (states['sensor.capbreton_next_rain'].attributes.rain_level_20min == 4)
+                  ]]]
+              - color: 'rgb(255, 255, 255)'
+                operator: default
+            styles:
+              card:
+                - height: 50px
+            type: 'custom:button-card'
+          - color_type: card
+            entity: sensor.capbreton_next_rain
+            name: 30
+            show_icon: false
+            show_state: false
+            state:
+              - color: 'rgb(204, 217, 255)'
+                operator: template
+                value: |
+                  [[[
+                    return states['sensor.capbreton_next_rain'].attributes
+                    && (states['sensor.capbreton_next_rain'].attributes.rain_level_30min == 2)
+                  ]]]
+              - color: 'rgb(128, 159, 255)'
+                operator: template
+                value: |
+                  [[[
+                    return states['sensor.capbreton_next_rain'].attributes
+                    && (states['sensor.capbreton_next_rain'].attributes.rain_level_30min == 3)
+                  ]]]
+              - color: 'rgb(51, 102, 255)'
+                operator: template
+                value: |
+                  [[[
+                    return states['sensor.capbreton_next_rain'].attributes
+                    && (states['sensor.capbreton_next_rain'].attributes.rain_level_30min == 4)
+                  ]]]
+              - color: 'rgb(255, 255, 255)'
+                operator: default
+            styles:
+              card:
+                - height: 50px
+            type: 'custom:button-card'
+          - color_type: card
+            entity: sensor.capbreton_next_rain
+            name: 40
+            show_icon: false
+            show_state: false
+            state:
+              - color: 'rgb(204, 217, 255)'
+                operator: template
+                value: |
+                  [[[
+                    return states['sensor.capbreton_next_rain'].attributes
+                    && (states['sensor.capbreton_next_rain'].attributes.rain_level_40min == 2)
+                  ]]]
+              - color: 'rgb(128, 159, 255)'
+                operator: template
+                value: |
+                  [[[
+                    return states['sensor.capbreton_next_rain'].attributes
+                    && (states['sensor.capbreton_next_rain'].attributes.rain_level_40min == 3)
+                  ]]]
+              - color: 'rgb(51, 102, 255)'
+                operator: template
+                value: |
+                  [[[
+                    return states['sensor.capbreton_next_rain'].attributes
+                    && (states['sensor.capbreton_next_rain'].attributes.rain_level_40min == 4)
+                  ]]]
+              - color: 'rgb(255, 255, 255)'
+                operator: default
+            styles:
+              card:
+                - height: 50px
+            type: 'custom:button-card'
+          - color_type: card
+            entity: sensor.capbreton_next_rain
+            name: 50
+            show_icon: false
+            show_state: false
+            state:
+              - color: 'rgb(204, 217, 255)'
+                operator: template
+                value: |
+                  [[[
+                    return states['sensor.capbreton_next_rain'].attributes
+                    && (states['sensor.capbreton_next_rain'].attributes.rain_level_50min == 2)
+                  ]]]
+              - color: 'rgb(128, 159, 255)'
+                operator: template
+                value: |
+                  [[[
+                    return states['sensor.capbreton_next_rain'].attributes
+                    && (states['sensor.capbreton_next_rain'].attributes.rain_level_50min == 3)
+                  ]]]
+              - color: 'rgb(51, 102, 255)'
+                operator: template
+                value: |
+                  [[[
+                    return states['sensor.capbreton_next_rain'].attributes
+                    && (states['sensor.capbreton_next_rain'].attributes.rain_level_50min == 4)
+                  ]]]
+              - color: 'rgb(255, 255, 255)'
+                operator: default
+            styles:
+              card:
+                - height: 50px
+            type: 'custom:button-card'
+        title: Pluie
+        type: horizontal-stack
+      - entities:
+          - script.reboot_ha
+        type: entities
+      - entities:
+          - entity: person.philipe
+          - entity: device_tracker.debi
+          - entity: device_tracker.debianxf
+          - entity: device_tracker.raspberrypi
+          - entity: device_tracker.esp_edc163_mini
+          - entity: device_tracker.sharp_tv_74_72_b0_c8_d6_56
+          - entity: device_tracker.desktop_gqs2re3
+        theme: clear-dark
+        type: entities
+    path: default_view
+    title: Home
+    type: module
+    url: /community_plugin/custom-header/custom-header.js
+  - badges: []
+    cards:
+      - entities:
+          - device_tracker.3a_28_f5_3e_84_b2
+          - device_tracker.46_51_82_65_ac_13
+          - device_tracker.6a_1a_36_d9_bd_f0
+          - device_tracker.7a_e3_42_f4_6d_3c
+          - device_tracker.9e_34_e2_d4_83_e6
+        type: entities
+      - entities:
+          - sensor.cpu_temp
+          - device_tracker.axel_pc
+          - sensor.today_icon1
+          - sensor.today_icon2
+          - sensor.today_icon3
+          - device_tracker.espfreebox
+          - device_tracker.esp_589a0d
+          - device_tracker.desktop_gqs2re3_2
+          - sensor.date_court_fr
+          - device_tracker.e6_d5_9a_58_aa_30
+          - device_tracker.espfreebox_2
+          - device_tracker.freebox_player_2
+          - device_tracker.galaxy_a6
+          - device_tracker.galaxy_s6_edge
+          - device_tracker.galaxy_tab_s3
+          - device_tracker.huawei_p9_lite
+          - device_tracker.raspberrypi_2
+          - device_tracker.raspberrypi_3
+          - device_tracker.raspberrypi_4
+          - device_tracker.raspberrypi_5
+          - device_tracker.raspberrypi_6
+          - device_tracker.raspberrypi_7
+          - device_tracker.raspberrypi_8
+          - device_tracker.raspberrypi_9
+          - binary_sensor.somebody_home
+          - sensor.today_icon
+        type: entities
+      - entities:
+          - sensor.desktop_gqs2re3_battery_full_lifetime
+          - sensor.desktop_gqs2re3_battery_remaining_time
+          - binary_sensor.desktop_gqs2re3_battery_status
+          - sensor.desktop_gqs2re3_cpu_usage
+          - sensor.desktop_gqs2re3_current_username
+          - binary_sensor.desktop_gqs2re3_media_playing
+          - sensor.desktop_gqs2re3_media_volume
+          - sensor.desktop_gqs2re3_memory_available
+          - sensor.desktop_gqs2re3_memory_total
+          - sensor.desktop_gqs2re3_memory_usage
+          - sensor.desktop_gqs2re3_memory_used
+          - sensor.desktop_gqs2re3_network_0_bps_received
+          - sensor.desktop_gqs2re3_network_0_bps_sent
+          - sensor.desktop_gqs2re3_network_0_bytes_received
+          - sensor.desktop_gqs2re3_network_0_bytes_sent
+          - sensor.desktop_gqs2re3_network_0_ipv4
+          - sensor.desktop_gqs2re3_network_0_ipv6
+          - sensor.desktop_gqs2re3_network_0_speed
+          - binary_sensor.desktop_gqs2re3_network_0_wired
+          - sensor.desktop_gqs2re3_network_1_bps_received
+          - sensor.desktop_gqs2re3_network_1_bps_sent
+          - sensor.desktop_gqs2re3_network_1_bytes_received
+          - sensor.desktop_gqs2re3_network_1_bytes_sent
+          - sensor.desktop_gqs2re3_network_1_ipv4
+          - sensor.desktop_gqs2re3_network_1_ipv6
+          - sensor.desktop_gqs2re3_network_1_speed
+          - sensor.desktop_gqs2re3_screen_0_width
+          - sensor.desktop_gqs2re3_screen_0_height
+          - binary_sensor.desktop_gqs2re3_power_status
+          - binary_sensor.desktop_gqs2re3_network_1_wired
+          - sensor.desktop_gqs2re3_screen_1_height
+          - sensor.desktop_gqs2re3_screen_1_width
+          - sensor.desktop_gqs2re3_storage_c_available_free_space
+          - sensor.desktop_gqs2re3_storage_c_format
+          - sensor.desktop_gqs2re3_storage_c_label
+          - sensor.desktop_gqs2re3_storage_c_total_free_space
+          - sensor.desktop_gqs2re3_storage_c_total_storage
+          - sensor.desktop_gqs2re3_storage_c_usage
+          - sensor.desktop_gqs2re3_storage_c_used_space
+          - sensor.desktop_gqs2re3_storage_h_available_free_space
+          - sensor.desktop_gqs2re3_storage_h_format
+          - sensor.desktop_gqs2re3_storage_h_label
+          - sensor.desktop_gqs2re3_storage_h_total_free_space
+          - sensor.desktop_gqs2re3_storage_h_total_storage
+          - sensor.desktop_gqs2re3_storage_h_usage
+          - sensor.desktop_gqs2re3_storage_h_used_space
+          - sensor.desktop_gqs2re3_storage_i_available_free_space
+          - sensor.desktop_gqs2re3_storage_i_format
+          - sensor.desktop_gqs2re3_storage_i_label
+          - sensor.desktop_gqs2re3_storage_i_total_free_space
+          - sensor.desktop_gqs2re3_storage_i_total_storage
+          - sensor.desktop_gqs2re3_storage_i_usage
+          - sensor.desktop_gqs2re3_storage_i_used_space
+          - sensor.desktop_gqs2re3_system_boot_time
+          - sensor.desktop_gqs2re3_system_idle_time
+          - sensor.desktop_gqs2re3_system_uptime
+          - binary_sensor.desktop_gqs2re3_volume_muted
+          - switch.my_computer
+          - binary_sensor.my_computer_battery_status
+          - binary_sensor.my_computer_charging
+          - binary_sensor.my_computer_connected
+        type: entities
+      - entities:
+          - script.my_computer_displays_off
+          - script.my_computer_displays_on
+          - script.my_computer_hibernate
+          - script.my_computer_lock
+          - script.my_computer_logoff
+          - script.my_computer_notify
+          - script.my_computer_reboot
+          - script.my_computer_refresh
+          - script.my_computer_shutdown
+          - script.my_computer_run_ccleaner
+          - script.my_computer_run_chrome
+          - script.my_computer_suspend
+          - script.my_computer_vol_mute
+          - script.my_computer_vol_max
+          - script.my_computer_wake
+        type: entities
+      - entities:
+          - sensor.gauge_disque
+          - sensor.gauge_ram
+          - sensor.gauge_uc
+        type: entities
+      - entity: camera.desktop_gqs2re3_screen_0
+        type: picture-entity
+      - entity: camera.desktop_gqs2re3_screen_1
+        type: picture-entity
+      - entities:
+          - device_tracker.raspberrypi_10
+        type: entities
+    path: traker
+    title: Traker
+  - badges: []
+    cards:
+      - entity: weather.maison
+        type: weather-forecast
+      - entities:
+          - sensor.dark_sky_apparent_temperature
+          - sensor.dark_sky_daily_max_precip_intensity_1d
+          - sensor.dark_sky_daily_max_precip_intensity_2d
+          - sensor.dark_sky_daily_max_precip_intensity_3d
+          - sensor.dark_sky_daily_max_precip_intensity_4d
+          - sensor.dark_sky_daily_summary
+          - sensor.dark_sky_daytime_high_apparent_temperature_1d
+          - sensor.dark_sky_daytime_high_apparent_temperature_2d
+          - sensor.dark_sky_daytime_high_apparent_temperature_3d
+          - sensor.dark_sky_daytime_high_apparent_temperature_4d
+          - sensor.dark_sky_daytime_high_temperature_1d
+          - sensor.dark_sky_daytime_high_temperature_2d
+          - sensor.dark_sky_daytime_high_temperature_3d
+          - sensor.dark_sky_daytime_high_temperature_4d
+          - sensor.dark_sky_humidity
+          - sensor.dark_sky_humidity_1d
+          - sensor.dark_sky_humidity_2d
+          - sensor.dark_sky_humidity_3d
+          - sensor.dark_sky_humidity_4d
+          - sensor.dark_sky_icon_1d
+          - sensor.dark_sky_icon_2d
+          - sensor.dark_sky_icon_3d
+          - sensor.dark_sky_icon_4d
+          - sensor.dark_sky_overnight_low_apparent_temperature_1d
+          - sensor.dark_sky_overnight_low_apparent_temperature_2d
+          - sensor.dark_sky_overnight_low_apparent_temperature_3d
+          - sensor.dark_sky_overnight_low_apparent_temperature_4d
+          - sensor.dark_sky_overnight_low_temperature_1d
+          - sensor.dark_sky_overnight_low_temperature_2d
+          - sensor.dark_sky_overnight_low_temperature_3d
+          - sensor.dark_sky_overnight_low_temperature_4d
+          - sensor.dark_sky_precip
+          - sensor.dark_sky_precip_1d
+          - sensor.dark_sky_precip_2d
+          - sensor.dark_sky_precip_3d
+          - sensor.dark_sky_precip_4d
+          - sensor.dark_sky_precip_accumulation_1d
+          - sensor.dark_sky_precip_accumulation_2d
+          - sensor.dark_sky_precip_accumulation_3d
+          - sensor.dark_sky_precip_accumulation_4d
+          - sensor.dark_sky_precip_intensity
+          - sensor.dark_sky_precip_intensity_1d
+          - sensor.dark_sky_precip_intensity_2d
+          - sensor.dark_sky_precip_intensity_3d
+          - sensor.dark_sky_precip_intensity_4d
+          - sensor.dark_sky_precip_probability
+          - sensor.dark_sky_precip_probability_1d
+          - sensor.dark_sky_precip_probability_2d
+          - sensor.dark_sky_precip_probability_3d
+          - sensor.dark_sky_precip_probability_4d
+          - sensor.dark_sky_pressure
+          - sensor.dark_sky_pressure_1d
+          - sensor.dark_sky_pressure_2d
+          - sensor.dark_sky_pressure_3d
+          - sensor.dark_sky_pressure_4d
+          - sensor.dark_sky_summary_1d
+          - sensor.dark_sky_summary_2d
+          - sensor.dark_sky_summary_3d
+          - sensor.dark_sky_summary_4d
+          - sensor.dark_sky_uv_index
+          - sensor.dark_sky_uv_index_1d
+          - sensor.dark_sky_uv_index_2d
+          - sensor.dark_sky_uv_index_3d
+          - sensor.dark_sky_uv_index_4d
+          - sensor.dark_sky_visibility
+          - sensor.dark_sky_visibility_1d
+          - sensor.dark_sky_visibility_2d
+          - sensor.dark_sky_visibility_3d
+          - sensor.dark_sky_visibility_4d
+          - sensor.dark_sky_wind_bearing
+          - sensor.dark_sky_wind_bearing_1d
+          - sensor.dark_sky_wind_bearing_2d
+          - sensor.dark_sky_wind_bearing_3d
+          - sensor.dark_sky_wind_bearing_4d
+          - sensor.dark_sky_wind_speed
+          - sensor.dark_sky_wind_speed_1d
+          - sensor.dark_sky_wind_speed_2d
+          - sensor.dark_sky_wind_speed_3d
+          - sensor.dark_sky_wind_speed_4d
+          - sensor.dark_sky_current_text
+          - sensor.dark_sky_current_text_3j
+          - sensor.dark_sky_current_text_dem
+        type: entities
+      - entity: weather.capbreton
+        type: weather-forecast
+      - entities:
+          - sensor.outside_pressure
+          - sensor.outside_pressure_2
+          - sensor.outside_temperature
+          - sensor.outside_temperature_2
+          - sensor.pluis_0mn
+          - sensor.pluis_10mn
+          - sensor.pluis_15mn
+          - sensor.pluis_20mn
+          - sensor.pluis_25mn
+          - sensor.pluis_30mn
+          - sensor.pluis_35mn
+          - sensor.pluis_40mn
+          - sensor.pluis_45mn
+          - sensor.pluis_50mn
+          - sensor.pluis_55mn
+          - sensor.pluis_5mn
+          - sensor.today_icon_dark
+        type: entities
+      - entities:
+          - entity: sensor.dark_sky_summary
+          - entity: sensor.dark_sky_temperature
+          - entity: sensor.date
+          - entity: sensor.dark_sky_icon
+          - entity: sensor.disk_use_percent
+          - entity: sensor.uptime
+          - entity: sensor.uptime_ha
+        type: entities
+      - entity: sensor.temperature
+        max: 50
+        min: 0
+        name: 'Température:'
+        severity:
+          green: 18
+          red: 23
+          yellow: 0
+        theme: default
+        type: gauge
