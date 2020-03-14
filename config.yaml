@@ -54,14 +54,6 @@ wake_on_lan:
 sensor:
 # ajout automatique rflink
 
- - platform: imap
-   server: imap.gmail.com
-   port: 993
-   username: axxxums
-   password: popy6440
-   search: FROM <axellum@hotmail.com>
-
-
 # ajout des capteur de darksky sur 4 jours et des capteurs util (ou pas)
  - platform: darksky
    api_key: 729171b239da1ade4b465769502588b9
