@@ -5,6 +5,8 @@ default_config:
 # http:
 #   base_url: example.duckdns.org:8123
 
+lovelace:
+  mode: yaml
 # Text to speech
 tts:
   - platform: google_translate
@@ -16,13 +18,6 @@ scene: !include scenes.yaml
 
 logger:
   default: error
-# integration rflink non fonstionnel
-rflink:
-  host: 192.168.0.**
-  port: 23
-  wait_for_ack: True
-  reconnect_interval: 5 #1 second
-  ignore_devices:
 
 # integration du serveur mqtt
 mqtt:
@@ -54,7 +49,19 @@ pi_hole:
 frontend:
   themes: !include_dir_merge_named themes
  
+wake_on_lan:
 # --------------- Partie sensor----------------------------------------------------------------
+sensor:
+# ajout automatique rflink
+
+ - platform: imap
+   server: imap.gmail.com
+   port: 993
+   username: axxxums
+   password: popy6440
+   search: FROM <axellum@hotmail.com>
+
+
 # ajout des capteur de darksky sur 4 jours et des capteurs util (ou pas)
  - platform: darksky
    api_key: 729171b239da1ade4b465769502588b9
@@ -199,7 +206,7 @@ frontend:
 # Groupage des icones sur trois jours
  - platform: template
    sensors:
-      dark_sky_current_text:
+      dark_sky_current_text_dem:
         value_template: >-
              {% if is_state("sensor.dark_sky_icon_1d","clear-day") %} Clear 
              {% elif is_state("sensor.dark_sky_icon_1d","clear-night") %} Clear 
@@ -215,7 +222,7 @@ frontend:
              {% elif is_state("sensor.dark_sky_icon_1d","lightning") %} Lightning
              {% elif is_state("sensor.dark_sky_icon_1d","thunderstorm") %} Thunderstorm
              {% endif %}
-      dark_sky_current_text_dem:
+      dark_sky_current_text_2j:
         value_template: >-
              {% if is_state("sensor.dark_sky_icon_2d","clear-day") %} Clear 
              {% elif is_state("sensor.dark_sky_icon_2d","clear-night") %} Clear 
@@ -253,24 +260,24 @@ frontend:
    sensors:
      today_icon1:
       value_template: >-
-          {% if is_state("sensor.dark_sky_current_text", 'Clear') %}
-            7
-          {% elif is_state("sensor.dark_sky_current_text", 'Cloudy') %}
-            3
-          {% elif is_state("sensor.dark_sky_current_text", 'Foggy') %}
-            4
-          {% elif is_state("sensor.dark_sky_current_text", 'Hailing') %}
-            8
-          {% elif is_state("sensor.dark_sky_current_text", 'lightning') %}
-            28
-          {% elif is_state("sensor.dark_sky_current_text", 'Partly Cloudy') %}
+          {% if is_state("sensor.dark_sky_current_text_dem", 'Clear') %}
             6
-          {% elif is_state("sensor.dark_sky_current_text", 'Rain') %}
+          {% elif is_state("sensor.dark_sky_current_text_dem", 'Cloudy') %}
+            3
+          {% elif is_state("sensor.dark_sky_current_text_dem", 'Foggy') %}
+            4
+          {% elif is_state("sensor.dark_sky_current_text_dem", 'Hailing') %}
+            7
+          {% elif is_state("sensor.dark_sky_current_text_dem", 'lightning') %}
+            11
+          {% elif is_state("sensor.dark_sky_current_text_dem", 'Partly Cloudy') %}
+            5
+          {% elif is_state("sensor.dark_sky_current_text_dem", 'Rain') %}
+            8
+          {% elif is_state("sensor.dark_sky_current_text_dem", 'Snowy') %}
             10
-          {% elif is_state("sensor.dark_sky_current_text", 'Snowy') %}
-            23
-          {% elif is_state("sensor.dark_sky_current_text", 'Windy') %}
-            13
+          {% elif is_state("sensor.dark_sky_current_text_dem", 'Windy') %}
+            9
           {% else %}
             2
           {% endif %}
@@ -279,57 +286,55 @@ frontend:
    sensors:
      today_icon2:
       value_template: >-
-          {% if is_state("sensor.dark_sky_current_text_dem", 'Clear') %}
-            7
-          {% elif is_state("sensor.dark_sky_current_text_dem", 'Cloudy') %}
-            3
-          {% elif is_state("sensor.dark_sky_current_text_dem", 'Foggy') %}
-            4
-          {% elif is_state("sensor.dark_sky_current_text_dem", 'Hailing') %}
-            8
-          {% elif is_state("sensor.dark_sky_current_text_dem", 'lightning') %}
-            28
-          {% elif is_state("sensor.dark_sky_current_text_dem", 'Partly Cloudy') %}
-            6
-          {% elif is_state("sensor.dark_sky_current_text_dem", 'Rain') %}
-            10
-          {% elif is_state("sensor.dark_sky_current_text_dem", 'Snowy') %}
+      
+          {% if is_state("sensor.dark_sky_current_text_2j", 'Clear') %}
+            26
+          {% elif is_state("sensor.dark_sky_current_text_2j", 'Cloudy') %}
             23
-          {% elif is_state("sensor.dark_sky_current_text_dem", 'Windy') %}
-            13
+          {% elif is_state("sensor.dark_sky_current_text_2j", 'Foggy') %}
+            24
+          {% elif is_state("sensor.dark_sky_current_text_2j", 'Hailing') %}
+            27
+          {% elif is_state("sensor.dark_sky_current_text_2j", 'lightning') %}
+            31
+          {% elif is_state("sensor.dark_sky_current_text_2j", 'Partly Cloudy') %}
+            25
+          {% elif is_state("sensor.dark_sky_current_text_2j", 'Rain') %}
+            28
+          {% elif is_state("sensor.dark_sky_current_text_2j", 'Snowy') %}
+            30
+          {% elif is_state("sensor.dark_sky_current_text_2j", 'Windy') %}
+            29
           {% else %}
-            2
+            22
           {% endif %}
-      friendly_name: temps 2 jours
+      friendly_name: temps 3 jours
  - platform: template
    sensors:
      today_icon3:
       value_template: >-
-      
           {% if is_state("sensor.dark_sky_current_text_3j", 'Clear') %}
-            7
+            16
           {% elif is_state("sensor.dark_sky_current_text_3j", 'Cloudy') %}
-            3
-          {% elif is_state("sensor.dark_sky_current_text_3j", 'Foggy') %}
-            4
-          {% elif is_state("sensor.dark_sky_current_text_3j", 'Hailing') %}
-            8
-          {% elif is_state("sensor.dark_sky_current_text_3j", 'lightning') %}
-            28
-          {% elif is_state("sensor.dark_sky_current_text_3j", 'Partly Cloudy') %}
-            6
-          {% elif is_state("sensor.dark_sky_current_text_3j", 'Rain') %}
-            10
-          {% elif is_state("sensor.dark_sky_current_text_3j", 'Snowy') %}
-            23
-          {% elif is_state("sensor.dark_sky_current_text_3j", 'Windy') %}
             13
+          {% elif is_state("sensor.dark_sky_current_text_3j", 'Foggy') %}
+            14
+          {% elif is_state("sensor.dark_sky_current_text_3j", 'Hailing') %}
+            17
+          {% elif is_state("sensor.dark_sky_current_text_3j", 'lightning') %}
+            21
+          {% elif is_state("sensor.dark_sky_current_text_3j", 'Partly Cloudy') %}
+            15
+          {% elif is_state("sensor.dark_sky_current_text_3j", 'Rain') %}
+            18
+          {% elif is_state("sensor.dark_sky_current_text_3j", 'Snowy') %}
+            20
+          {% elif is_state("sensor.dark_sky_current_text_3j", 'Windy') %}
+            19
           {% else %}
-            2
+            12
           {% endif %}
-      friendly_name: temps 3 jours
-
-
+      friendly_name: temps 2 jours
 # Calcul pour transformé le pourcentage en degres pour les jauges pour 0=318° ; 100%=225° ; ((360-318)+225)/100=2.67
 # Donc 1%=2.67° ; Soit x le pencentage à afficher et y l'angle de l'aiguille:
 # 42°/2.67 = 15.73% ; si x > 15.73 => y=(x*2.7)+(318-360) ; sinon x < 15.73 alors y=(x*2.7)+318
@@ -365,9 +370,6 @@ frontend:
                {% else %}
                 {{ states('sensor.memory_use_percent')| round(1)| float * 2.7 + 318}}
                 {%- endif -%}
-
-
-
 
 # Iconnes pour la pluis sur 1h
  - platform: template
@@ -811,16 +813,70 @@ frontend:
                 1
                 {%- endif -%}
 
+# Pour les trois détecteur supplémentaires
  - platform: template
    sensors:
       ordie_la:
        value_template: >-
-          {% if is_state("binary_sensor.my_computer_connected", 'Connecté') %}
-            99
+          {% if is_state("device_tracker.desktop_gqs2re3_2", 'home') %}
+            108
           {% else %}
-            96
+            107
                 {%- endif -%}
-                
+
+ - platform: template
+   sensors:
+      espfreebox:
+       value_template: >-
+          {% if is_state("device_tracker.espfreebox", 'home') %}
+            108
+          {% else %}
+            107
+                {%- endif -%}
+
+
+ - platform: template
+   sensors:
+      freebox_player:
+       value_template: >-
+          {% if is_state("device_tracker.freebox_player_2", 'home') %}
+            108
+          {% else %}
+            107
+                {%- endif -%}
+
+
+# Pour les trois détecteur en bas de la page 2
+ - platform: template
+   sensors:
+      ordie_la2:
+       value_template: >-
+          {% if is_state("binary_sensor.my_computer_connected", 'home') %}
+            96
+          {% else %}
+            99
+                {%- endif -%}
+
+ - platform: template
+   sensors:
+      espfreebox2:
+       value_template: >-
+          {% if is_state("device_tracker.espfreebox", 'home') %}
+            96
+          {% else %}
+            99
+                {%- endif -%}
+
+ - platform: template
+   sensors:
+      freebox_player2:
+       value_template: >-
+          {% if is_state("device_tracker.freebox_player", 'home') %}
+            96
+          {% else %}
+            99
+                {%- endif -%}
+
  # Si l'alerte est rouge, on ne prend que les type d alerte en rouge les {{}} agrége les données
  # states.sensor.capbreton_weather_alert.attributes['Vagues-submersion'] permet de passer les caractére spéciaux et espace
  - platform: template
@@ -912,7 +968,7 @@ frontend:
            {{'Vagues et submersion '}}
          {% endif %}
         {% else %}
-         Rien.
+         Aucune alerte.
         {% endif %}
       friendly_name: text alert
       
@@ -922,7 +978,7 @@ frontend:
       value_template: >-
        {% set alert = states('sensor.alerte_coul') | float %}
         {% if is_state("sensor.capbreton_weather_alert", 'Rouge') %}
-        -
+        
          {% if states['sensor.capbreton_weather_alert'].attributes.Vent_violent == 'Rouge' %}
           {{' Vent violent -'}}
          {% endif %}
@@ -1008,13 +1064,248 @@ frontend:
          {% if states.sensor.capbreton_weather_alert.attributes['Vagues-submersion'] == 'Jaune' %}
            {{' Vagues-submersion -'}}
          {% endif %}
+         
         {% else %}
          Rien.
         {% endif %}
       friendly_name: text alert love
 
-# Presence pour eteidre l ecran - Merci à Paradis Artificiels
+
+ - platform: mqtt
+   name: "My Computer - Current User"
+   state_topic: "iotlink/workgroup/desktop-gqs2re3/windows-monitor/stats/system/current-user"
+   unit_of_measurement: ''
+   icon: mdi:account
+   value_template: "{{ value }}"
+   availability_topic: "iotlink/workgroup/desktop-gqs2re3/lwt"
+   payload_available: "ON"
+   payload_not_available: "OFF"
+   qos: 1
+
+ - platform: mqtt
+   name: "My Computer - Idle Time"
+   state_topic: "iotlink/workgroup/desktop-gqs2re3/windows-monitor/stats/system/idle-time"
+   unit_of_measurement: 'seconds'
+   icon: mdi:timer
+   value_template: "{{ value }}"
+   availability_topic: "iotlink/workgroup/desktop-gqs2re3/lwt"
+   payload_available: "ON"
+   payload_not_available: "OFF"
+   qos: 1
+
+ - platform: mqtt
+   name: "My Computer - CPU Usage"
+   state_topic: "iotlink/workgroup/desktop-gqs2re3/windows-monitor/stats/cpu/usage"
+   unit_of_measurement: '%'
+   icon: mdi:speedometer
+   value_template: "{{ value }}"
+   availability_topic: "iotlink/workgroup/desktop-gqs2re3/lwt"
+   payload_available: "ON"
+   payload_not_available: "OFF"
+   qos: 1
+
+ - platform: mqtt
+   name: "My Computer - RAM Usage"
+   state_topic: "iotlink/workgroup/desktop-gqs2re3/windows-monitor/stats/memory/usage"
+   unit_of_measurement: '%'
+   icon: mdi:memory
+   value_template: "{{ value }}"
+   availability_topic: "iotlink/workgroup/desktop-gqs2re3/lwt"
+   payload_available: "ON"
+   payload_not_available: "OFF"
+   qos: 1
+
+ - platform: mqtt
+   name: "My Computer - RAM Available"
+   state_topic: "iotlink/workgroup/desktop-gqs2re3/windows-monitor/stats/memory/available"
+   unit_of_measurement: 'MB'
+   icon: mdi:memory
+   value_template: "{{ value }}"
+   availability_topic: "iotlink/workgroup/desktop-gqs2re3/lwt"
+   payload_available: "ON"
+   payload_not_available: "OFF"
+   qos: 1
+
+ - platform: mqtt
+   name: "My Computer - RAM Used"
+   state_topic: "iotlink/workgroup/desktop-gqs2re3/windows-monitor/stats/memory/used"
+   unit_of_measurement: 'MB'
+   icon: mdi:memory
+   value_template: "{{ value }}"
+   availability_topic: "iotlink/workgroup/desktop-gqs2re3/lwt"
+   payload_available: "ON"
+   payload_not_available: "OFF"
+   qos: 1
+
+ - platform: mqtt
+   name: "My Computer - RAM Total"
+   state_topic: "iotlink/workgroup/desktop-gqs2re3/windows-monitor/stats/memory/total"
+   unit_of_measurement: 'MB'
+   icon: mdi:memory
+   value_template: "{{ value }}"
+   availability_topic: "iotlink/workgroup/desktop-gqs2re3/lwt"
+   payload_available: "ON"
+   payload_not_available: "OFF"
+   qos: 1
+
+ - platform: mqtt
+   name: "My Computer - Remaining Battery"
+   state_topic: "iotlink/workgroup/desktop-gqs2re3/windows-monitor/stats/battery/remaining-percent"
+   unit_of_measurement: '%'
+   device_class: battery
+   value_template: "{{ value }}"
+   availability_topic: "iotlink/workgroup/desktop-gqs2re3/lwt"
+   payload_available: "ON"
+   payload_not_available: "OFF"
+   qos: 1
+
+ - platform: mqtt
+   name: "My Computer - Remaining Battery Time"
+   state_topic: "iotlink/workgroup/desktop-gqs2re3/windows-monitor/stats/battery/remaining-time"
+   unit_of_measurement: 'minutes'
+   icon: mdi:timer
+   value_template: "{{ ( value | float / 60 ) | int }}"
+   availability_topic: "iotlink/workgroup/desktop-gqs2re3/lwt"
+   payload_available: "ON"
+   payload_not_available: "OFF"
+   qos: 1
+
+ - platform: mqtt
+   name: "My Computer - Predicted Lifetime"
+   state_topic: "iotlink/workgroup/desktop-gqs2re3/windows-monitor/stats/battery/full-lifetime"
+   unit_of_measurement: 'minutes'
+   icon: mdi:timer
+   value_template: "{{ ( value | float / 60 ) | int }}"
+   availability_topic: "iotlink/workgroup/desktop-gqs2re3/lwt"
+   payload_available: "ON"
+   payload_not_available: "OFF"
+   qos: 1
+
+ - platform: mqtt
+   name: "My Computer - HDD Usage (C)"
+   state_topic: "iotlink/workgroup/desktop-gqs2re3/windows-monitor/stats/hard-drive/c/drive-usage"
+   unit_of_measurement: '%'
+   icon: mdi:chart-donut
+   value_template: "{{ value }}"
+   availability_topic: "iotlink/workgroup/desktop-gqs2re3/lwt"
+   payload_available: "ON"
+   payload_not_available: "OFF"
+   qos: 1
+
+ - platform: mqtt
+   name: "My Computer - HDD Total Size (C)"
+   state_topic: "iotlink/workgroup/desktop-gqs2re3/windows-monitor/stats/hard-drive/c/total-size"
+   unit_of_measurement: 'GB'
+   icon: mdi:harddisk
+   value_template: "{{ value }}"
+   availability_topic: "iotlink/workgroup/desktop-gqs2re3/lwt"
+   payload_available: "ON"
+   payload_not_available: "OFF"
+   qos: 1
+
+ - platform: mqtt
+   name: "My Computer - HDD Total Free Space (C)"
+   state_topic: "iotlink/workgroup/desktop-gqs2re3/windows-monitor/stats/hard-drive/c/total-free-space"
+   unit_of_measurement: 'GB'
+   icon: mdi:harddisk
+   value_template: "{{ value }}"
+   availability_topic: "iotlink/workgroup/desktop-gqs2re3/lwt"
+   payload_available: "ON"
+   payload_not_available: "OFF"
+   qos: 1
+
+ - platform: mqtt
+   name: "My Computer - HDD Free Space (C)"
+   state_topic: "iotlink/workgroup/desktop-gqs2re3/windows-monitor/stats/hard-drive/c/available-free-space"
+   unit_of_measurement: 'GB'
+   icon: mdi:harddisk
+   value_template: "{{ value }}"
+   availability_topic: "iotlink/workgroup/desktop-gqs2re3/lwt"
+   payload_available: "ON"
+   payload_not_available: "OFF"
+   qos: 1
+
+ - platform: mqtt
+   name: "My Computer - HDD Used Space (C)"
+   state_topic: "iotlink/workgroup/desktop-gqs2re3/windows-monitor/stats/hard-drive/c/used-space"
+   unit_of_measurement: 'GB'
+   icon: mdi:harddisk
+   value_template: "{{ value }}"
+   availability_topic: "iotlink/workgroup/desktop-gqs2re3/lwt"
+   payload_available: "ON"
+   payload_not_available: "OFF"
+   qos: 1
+
+ - platform: mqtt
+   name: "My Computer - HDD Format (C)"
+   state_topic: "iotlink/workgroup/desktop-gqs2re3/windows-monitor/stats/hard-drive/c/drive-format"
+   unit_of_measurement: ''
+   icon: mdi:harddisk
+   value_template: "{{ value }}"
+   availability_topic: "iotlink/workgroup/desktop-gqs2re3/lwt"
+   payload_available: "ON"
+   payload_not_available: "OFF"
+   qos: 1
+
+ - platform: mqtt
+   name: "My Computer - HDD Label (C)"
+   state_topic: "iotlink/workgroup/desktop-gqs2re3/windows-monitor/stats/hard-drive/c/volume-label"
+   unit_of_measurement: ''
+   icon: mdi:harddisk
+   value_template: "{{ value }}"
+   availability_topic: "iotlink/workgroup/desktop-gqs2re3/lwt"
+   payload_available: "ON"
+   payload_not_available: "OFF"
+   qos: 1
+
+ - platform: mqtt
+   name: "My Computer - Network IPv4"
+   state_topic: "iotlink/workgroup/desktop-gqs2re3/windows-monitor/stats/network/0/ipv4"
+   unit_of_measurement: ''
+   icon: mdi:lan
+   value_template: "{{ value }}"
+   availability_topic: "iotlink/workgroup/desktop-gqs2re3/lwt"
+   payload_available: "ON"
+   payload_not_available: "OFF"
+   qos: 1
+
+ - platform: mqtt
+   name: "My Computer - Network IPv6"
+   state_topic: "iotlink/workgroup/desktop-gqs2re3/windows-monitor/stats/network/0/ipv6"
+   unit_of_measurement: ''
+   icon: mdi:lan
+   value_template: "{{ value }}"
+   availability_topic: "iotlink/workgroup/desktop-gqs2re3/lwt"
+   payload_available: "ON"
+   payload_not_available: "OFF"
+   qos: 1
+
+ - platform: mqtt
+   name: "My Computer - Network Speed"
+   state_topic: "iotlink/workgroup/desktop-gqs2re3/windows-monitor/stats/network/0/speed"
+   unit_of_measurement: 'Mbps'
+   icon: mdi:speedometer
+   value_template: "{{ value }}"
+   availability_topic: "iotlink/workgroup/desktop-gqs2re3/lwt"
+   payload_available: "ON"
+   payload_not_available: "OFF"
+   qos: 1
+
+ - platform: mqtt
+   name: "My Computer - Network Wired"
+   state_topic: "iotlink/workgroup/desktop-gqs2re3/windows-monitor/stats/network/0/wired"
+   unit_of_measurement: ''
+   icon: mdi:ethernet
+   value_template: "{{ value }}"
+   availability_topic: "iotlink/workgroup/desktop-gqs2re3/lwt"
+   payload_available: "ON"
+   payload_not_available: "OFF"
+   qos: 1
+
+# ----------------------------------- BINARY SENSOR ----------------------------------------------------------------------------
 binary_sensor:
+
+# Presence pour eteidre l ecran - Merci à Paradis Artificiels -  simplifie avec juste la detection du portable sur le wifi
   - platform: template
     sensors:
       somebody_home:
@@ -1022,7 +1313,6 @@ binary_sensor:
           {{ is_state('person.axel', 'home')
              or is_state('person.philipe', 'home')}}
 
-# Gestion du pc par IOT Link
   - platform: mqtt
     name: "My Computer - Connected"
     state_topic: "iotlink/workgroup/desktop-gqs2re3/lwt"
@@ -1056,10 +1346,8 @@ binary_sensor:
     payload_not_available: "OFF"
     qos: 1
 
-
 #------------------------------------------------------- camera ----------------------------------------------------------
 camera:
-
 
 #------------------------------------------------------- switch ----------------------------------------------------------
 switch:
@@ -1076,6 +1364,3 @@ switch:
 
 #------------------------------------------------------- light ----------------------------------------------------------
 light:
-  - platform: rflink
-    automatic_add: true
-
