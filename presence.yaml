@@ -1,0 +1,9 @@
+# a mettre dans les binary sensor du fichier configuration.yaml ----------------------------------------------------------------------------
+
+# Presence pour eteidre l ecran - Merci à Paradis Artificiels -  simplifie avec juste la detection du portable sur le wifi
+  - platform: template
+    sensors:
+      somebody_home:
+        value_template: >-
+          {{ is_state('person.axel', 'home')
+             or is_state('person.philipe', 'home')}}
