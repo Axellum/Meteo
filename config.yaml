@@ -90,8 +90,8 @@ sensor:
     minutes: 15
     seconds: 00
     milliseconds: 0
-   latitude: 43.653014
-   longitude: -1.412521
+   latitude: 43.0
+   longitude: -1.0
    
 # ajout des capteur mqtt
  - platform: mqtt
