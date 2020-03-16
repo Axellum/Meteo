@@ -561,7 +561,7 @@ sensor:
    sensors:
      pluis_proch:
       value_template: >-
-             {% set pluis = states('sensor.capbreton_next_rain') %}
+             {% set pluie = states('sensor.capbreton_next_rain') %}
               {% if is_state("sensor.capbreton_next_rain", 'No rain') %}
                 Pas de pluie.
               {% else %}
