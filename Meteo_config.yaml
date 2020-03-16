@@ -1,0 +1,657 @@
+# Ligne à copier dans son fichier configuration.yaml aprés modification en fonction de votre config
+
+# Configure a default setup of Home Assistant (frontend, api, etc)
+default_config:
+
+# Uncomment this if you are using SSL/TLS, running in Docker container, etc.
+# http:
+#   base_url: example.duckdns.org:8123
+
+# Text to speech
+tts:
+  - platform: google_translate
+
+group: !include groups.yaml
+automation: !include automations.yaml
+script: !include scripts.yaml
+scene: !include scenes.yaml
+
+
+    
+# integration de pie hole, antie pub et nb de client
+pi_hole:
+  host: localhost:4865
+  api_key: ""
+
+mqtt:
+  broker: a0d7b954-mqtt
+  username: !secret mqtt_username
+  password: !secret mqtt_password
+  client_id: home-assistant
+
+wake_on_lan:
+
+meteo_france:
+  - city: '40130'
+  
+# --------------- Partie sensor ----------------------------------------------------------------
+sensor:
+# ajout automatique rflink
+
+# ajout des capteur de darksky sur 4 jours et des capteurs util (ou pas)
+ - platform: darksky
+   api_key: **********
+   forecast:
+     - 1
+     - 2
+     - 3
+     - 4
+   monitored_conditions:
+    - icon
+    - summary
+    - humidity
+    - temperature
+    - temperature_high
+    - temperature_low
+    - apparent_temperature
+    - apparent_temperature_high
+    - apparent_temperature_low
+    - wind_speed
+    - wind_bearing
+    - precip_type
+    - precip_probability
+    - precip_accumulation
+    - precip_intensity
+    - precip_intensity_max
+    - uv_index
+    - daily_summary
+    - pressure
+    - visibility
+   scan_interval:
+  # intervalle d'actualisation (pas trop car limité)
+    days: 0
+    hours: 0
+    minutes: 15
+    seconds: 00
+    milliseconds: 0
+   latitude: 43.*
+   longitude: -1.*
+
+   
+# capteurs systheme hass
+ - platform: systemmonitor
+   resources:
+      - type: memory_use_percent
+      - type: processor_use
+      - type: disk_use_percent
+        arg: /
+     
+# Temps d'allumage de hass
+ - platform: uptime
+   name: Uptime
+   scan_interval: 60
+   unit_of_measurement: hours
+ - platform: template
+   sensors:
+     uptime_ha:
+       friendly_name: 'Uptime Home Assistant'
+       icon_template: mdi:home-assistant
+       value_template: >-
+          {% set uptime = states('sensor.uptime') | float(-1) %}
+          {% if uptime >= 0 %}
+            {% set time = (3600 * uptime) | int %}
+            {% set minutes = ((time % 3600) / 60) | int %}
+            {% set hours = ((time % 86400) / 3600) | int %}
+            {% set days = (time / 86400) | int %}
+            {% if time < 60 %}
+              {{ time }} s
+            {% else %}
+              {%- if days > 0 -%}
+                {%- if days == 1 -%}
+                  1 jour
+                {%- else -%}
+                  {{ days }} j.
+                {%- endif -%}
+              {%- endif -%}
+              {%- if hours > 0 and days < 7 -%}
+                {%- if days > 0 -%}
+                  {{ ', ' }}
+                {%- endif -%}
+                {%- if hours == 1 -%}
+                  1 h
+                {%- else -%}
+                  {{ hours }} h
+                {%- endif -%}
+              {%- endif -%}
+              {%- if days == 0 and minutes > 0 -%}
+                {%- if hours > 0 -%}
+                  {{ ', ' }}{{ minutes }} min
+                {%- else -%}
+                  {%- if minutes == 1 -%}
+                    1 mn
+                  {%- else -%}
+                    {{ minutes }} mn
+                  {%- endif -%}
+                {%- endif -%}
+              {%- endif -%}
+            {% endif %}
+          {% else %}
+            unknown
+          {% endif %}  
+
+# Pour l affichage du jour et de l'heure - Merci à Paradis Artificiels
+ - platform: time_date
+   display_options:
+     - 'time'
+     - 'date'
+ - platform: template
+   sensors:
+    date_simple:
+      entity_id: sensor.date
+      friendly_name: "Date du jour"
+      icon_template: mdi:calendar-today
+      value_template: >
+        {% set months = ["Janvier", "Fevrier", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Decembre"] %}
+        {% set days = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"]  %}
+        {{ days[now().weekday()] + ' ' + now().day | string + ' ' + months[now().month-1] }}
+    date_court_fr:
+      entity_id: sensor.date
+      friendly_name: "Date court"
+      icon_template: mdi:calendar-today
+      value_template: >
+        {% set months = ["Jan", "Fev", "Mar", "Avr", "Mai", "Juin", "Juil", "Août", "Sep", "Oct", "Nov", "Dec"] %}
+        {{ now().day | string + ' ' + months[now().month-1] }}
+
+# Groupage des icones sur trois jours
+ - platform: template
+   sensors:
+      dark_sky_current_text_dem:
+        value_template: >-
+             {% if is_state("sensor.dark_sky_icon_1d","clear-day") %} Clear 
+             {% elif is_state("sensor.dark_sky_icon_1d","clear-night") %} Clear 
+             {% elif is_state("sensor.dark_sky_icon_1d","rain") %} Rain
+             {% elif is_state("sensor.dark_sky_icon_1d","snow") %} Snowy
+             {% elif is_state("sensor.dark_sky_icon_1d","fog") %} Foggy
+             {% elif is_state("sensor.dark_sky_icon_1d","sleet") %} Sleet
+             {% elif is_state("sensor.dark_sky_icon_1d","wind") %} Windy
+             {% elif is_state("sensor.dark_sky_icon_1d","cloudy") %} Cloudy
+             {% elif is_state("sensor.dark_sky_icon_1d","partly-cloudy-day") %} Partly Cloudy
+             {% elif is_state("sensor.dark_sky_icon_1d","partly-cloudy-night") %} Partly Cloudy
+             {% elif is_state("sensor.dark_sky_icon_1d","hail") %} Hailing
+             {% elif is_state("sensor.dark_sky_icon_1d","lightning") %} Lightning
+             {% elif is_state("sensor.dark_sky_icon_1d","thunderstorm") %} Thunderstorm
+             {% endif %}
+      dark_sky_current_text_2j:
+        value_template: >-
+             {% if is_state("sensor.dark_sky_icon_2d","clear-day") %} Clear 
+             {% elif is_state("sensor.dark_sky_icon_2d","clear-night") %} Clear 
+             {% elif is_state("sensor.dark_sky_icon_2d","rain") %} Rain
+             {% elif is_state("sensor.dark_sky_icon_2d","snow") %} Snowy
+             {% elif is_state("sensor.dark_sky_icon_2d","fog") %} Foggy
+             {% elif is_state("sensor.dark_sky_icon_2d","sleet") %} Sleet
+             {% elif is_state("sensor.dark_sky_icon_2d","wind") %} Windy
+             {% elif is_state("sensor.dark_sky_icon_2d","cloudy") %} Cloudy
+             {% elif is_state("sensor.dark_sky_icon_2d","partly-cloudy-day") %} Partly Cloudy
+             {% elif is_state("sensor.dark_sky_icon_2d","partly-cloudy-night") %} Partly Cloudy
+             {% elif is_state("sensor.dark_sky_icon_2d","hail") %} Hailing
+             {% elif is_state("sensor.dark_sky_icon_2d","lightning") %} Lightning
+             {% elif is_state("sensor.dark_sky_icon_2d","thunderstorm") %} Thunderstorm
+             {% endif %}
+      dark_sky_current_text_3j:
+        value_template: >-
+             {% if is_state("sensor.dark_sky_icon_3d","clear-day") %} Clear 
+             {% elif is_state("sensor.dark_sky_icon_3d","clear-night") %} Clear 
+             {% elif is_state("sensor.dark_sky_icon_3d","rain") %} Rain
+             {% elif is_state("sensor.dark_sky_icon_3d","snow") %} Snowy
+             {% elif is_state("sensor.dark_sky_icon_3d","fog") %} Foggy
+             {% elif is_state("sensor.dark_sky_icon_3d","sleet") %} Sleet
+             {% elif is_state("sensor.dark_sky_icon_3d","wind") %} Windy
+             {% elif is_state("sensor.dark_sky_icon_3d","cloudy") %} Cloudy
+             {% elif is_state("sensor.dark_sky_icon_3d","partly-cloudy-day") %} Partly Cloudy
+             {% elif is_state("sensor.dark_sky_icon_3d","partly-cloudy-night") %} Partly Cloudy
+             {% elif is_state("sensor.dark_sky_icon_3d","hail") %} Hailing
+             {% elif is_state("sensor.dark_sky_icon_3d","lightning") %} Lightning
+             {% elif is_state("sensor.dark_sky_icon_3d","thunderstorm") %} Thunderstorm
+             {% endif %}
+# Icone des trois jours suivant en prenant les groupages
+ - platform: template
+   sensors:
+     today_icon1:
+      value_template: >-
+          {% if is_state("sensor.dark_sky_current_text_dem", 'Clear') %}
+            6
+          {% elif is_state("sensor.dark_sky_current_text_dem", 'Cloudy') %}
+            3
+          {% elif is_state("sensor.dark_sky_current_text_dem", 'Foggy') %}
+            4
+          {% elif is_state("sensor.dark_sky_current_text_dem", 'Hailing') %}
+            7
+          {% elif is_state("sensor.dark_sky_current_text_dem", 'lightning') %}
+            11
+          {% elif is_state("sensor.dark_sky_current_text_dem", 'Partly Cloudy') %}
+            5
+          {% elif is_state("sensor.dark_sky_current_text_dem", 'Rain') %}
+            8
+          {% elif is_state("sensor.dark_sky_current_text_dem", 'Snowy') %}
+            10
+          {% elif is_state("sensor.dark_sky_current_text_dem", 'Windy') %}
+            9
+          {% else %}
+            2
+          {% endif %}
+      friendly_name: temps 1 jours
+ - platform: template
+   sensors:
+     today_icon2:
+      value_template: >-
+      
+          {% if is_state("sensor.dark_sky_current_text_2j", 'Clear') %}
+            26
+          {% elif is_state("sensor.dark_sky_current_text_2j", 'Cloudy') %}
+            23
+          {% elif is_state("sensor.dark_sky_current_text_2j", 'Foggy') %}
+            24
+          {% elif is_state("sensor.dark_sky_current_text_2j", 'Hailing') %}
+            27
+          {% elif is_state("sensor.dark_sky_current_text_2j", 'lightning') %}
+            31
+          {% elif is_state("sensor.dark_sky_current_text_2j", 'Partly Cloudy') %}
+            25
+          {% elif is_state("sensor.dark_sky_current_text_2j", 'Rain') %}
+            28
+          {% elif is_state("sensor.dark_sky_current_text_2j", 'Snowy') %}
+            30
+          {% elif is_state("sensor.dark_sky_current_text_2j", 'Windy') %}
+            29
+          {% else %}
+            22
+          {% endif %}
+      friendly_name: temps 3 jours
+ - platform: template
+   sensors:
+     today_icon3:
+      value_template: >-
+          {% if is_state("sensor.dark_sky_current_text_3j", 'Clear') %}
+            16
+          {% elif is_state("sensor.dark_sky_current_text_3j", 'Cloudy') %}
+            13
+          {% elif is_state("sensor.dark_sky_current_text_3j", 'Foggy') %}
+            14
+          {% elif is_state("sensor.dark_sky_current_text_3j", 'Hailing') %}
+            17
+          {% elif is_state("sensor.dark_sky_current_text_3j", 'lightning') %}
+            21
+          {% elif is_state("sensor.dark_sky_current_text_3j", 'Partly Cloudy') %}
+            15
+          {% elif is_state("sensor.dark_sky_current_text_3j", 'Rain') %}
+            18
+          {% elif is_state("sensor.dark_sky_current_text_3j", 'Snowy') %}
+            20
+          {% elif is_state("sensor.dark_sky_current_text_3j", 'Windy') %}
+            19
+          {% else %}
+            12
+          {% endif %}
+      friendly_name: temps 2 jours
+
+# Calcul pour transformé le pourcentage en degres pour les jauges pour 0=318° ; 100%=225° ; ((360-318)+225)/100=2.67
+# Donc 1%=2.67° ; Soit x le pencentage à afficher et y l'angle de l'aiguille:
+# 42°/2.67 = 15.73% ; si x > 15.73 => y=(x*2.7)+(318-360) ; sinon x < 15.73 alors y=(x*2.7)+318
+ - platform: template
+   sensors:
+      gauge_disque:
+        value_template: >-
+             {% set disk_use = states('sensor.disk_use_percent') | float  %}
+               {%- if disk_use > 15.73 -%}
+                {{ states('sensor.disk_use_percent') | round(1) |float  * 2.7 - 42}}
+               {% else %}
+                {{ states('sensor.disk_use_percent') | round(1) |float  * 2.7 + 318}}
+                {%- endif -%}
+ - platform: template
+   sensors:
+      gauge_uc:
+        value_template: >-
+             {% set processor_use = states('sensor.processor_use') | float %}
+               {%- if processor_use > 15.73 -%}
+                {{ states('sensor.processor_use') | round(1)|float * 2.7 - 42}}
+               {% else %}
+                {{ states('sensor.processor_use') | round(1)|float * 2.7 + 318}}
+                {%- endif -%}
+ - platform: template
+   sensors:
+      gauge_ram:
+        value_template: >-
+             {% set memory_use = states('sensor.memory_use_percent') | float %}
+               {%- if memory_use > 15.73 -%}
+                {{ states('sensor.memory_use_percent') | round(1)|float * 2.7 - 42}}
+               {% else %}
+                {{ states('sensor.memory_use_percent')| round(1)| float * 2.7 + 318}}
+                {%- endif -%}
+                
+# texte prevision de la prochaine pluis
+ - platform: template
+   sensors:
+     pluis_proch:
+      value_template: >-
+             {% set pluis = states('sensor.capbreton_next_rain') %}
+              {% if is_state("sensor.capbreton_next_rain", 'No rain') %}
+                Pas de pluie.
+              {% else %}
+                {{ 'Averse dans ' }}{{ pluie }} mn
+              {% endif %}
+      friendly_name: Pluie
+
+# Icone du jours meteo france
+ - platform: template
+   sensors:
+      today_icon:
+       value_template: >-
+          {% if is_state("sensor.capbreton_weather", 'Nuit claire') %}
+            41
+          {% elif is_state("sensor.capbreton_weather", 'Très nuageux') %}
+            37
+          {% elif is_state("sensor.capbreton_weather", 'Brume') %}
+            41
+          {% elif is_state("sensor.capbreton_weather", 'bancs de brouillard') %}
+            56
+          {% elif is_state("sensor.capbreton_weather", 'Brouillard givrant') %}
+            63 
+          {% elif is_state("sensor.capbreton_weather", 'Risque de grêle') %}
+            60
+          {% elif is_state("sensor.capbreton_weather", "Risque d'orages") %}
+            64
+          {% elif is_state("sensor.capbreton_weather", 'Orages') %}
+            65
+          {% elif is_state("sensor.capbreton_weather", 'Pluie orageuses') %}
+            65
+          {% elif is_state("sensor.capbreton_weather", 'Pluies orageuses') %}
+            65
+          {% elif is_state("sensor.capbreton_weather", 'Averses orageuses') %}
+            64
+          {% elif is_state("sensor.capbreton_weather", 'Ciel voilé') %}
+            67
+          {% elif is_state("sensor.capbreton_weather", 'Ciel voilé nuit') %}
+            66
+          {% elif is_state("sensor.capbreton_weather", 'Éclaircies') %}
+            39
+          {% elif is_state("sensor.capbreton_weather", 'Pluie forte') %}
+            50 
+          {% elif is_state("sensor.capbreton_weather", 'Bruine') %}
+            67
+          {% elif is_state("sensor.capbreton_weather", 'Bruine / Pluie faible') %}
+            69
+          {% elif is_state("sensor.capbreton_weather", 'Pluie faible') %}
+            48
+          {% elif is_state("sensor.capbreton_weather", 'Pluies éparses / Rares averses') %}
+            48
+          {% elif is_state("sensor.capbreton_weather", 'Pluies éparses') %}
+            48
+          {% elif is_state("sensor.capbreton_weather", 'Rares averses') %}
+            48
+          {% elif is_state("sensor.capbreton_weather", 'Pluie / Averses') %}
+            44
+          {% elif is_state("sensor.capbreton_weather", 'Averses') %}
+            44
+          {% elif is_state("sensor.capbreton_weather", 'Pluie') %}
+            43
+          {% elif is_state("sensor.capbreton_weather", 'Neige / Averses de neige') %}
+            57 
+          {% elif is_state("sensor.capbreton_weather", 'Neige') %}
+            58
+          {% elif is_state("sensor.capbreton_weather", 'Averses de neige') %}
+            57
+          {% elif is_state("sensor.capbreton_weather", 'Neige forte') %}
+            58
+          {% elif is_state("sensor.capbreton_weather", 'Quelques flocons') %}
+            57
+          {% elif is_state("sensor.capbreton_weather", 'Pluie et neige') %}
+            57
+          {% elif is_state("sensor.capbreton_weather", 'Pluie verglaçante') %}
+            77
+          {% elif is_state("sensor.capbreton_weather", 'Ensoleillé') %}
+            75
+          {% else %}
+            55
+          {% endif %}
+       friendly_name: meteo france
+
+# Alerte meteo
+ - platform: template
+   sensors:
+      alerte_coul:
+       value_template: >-
+          {% if is_state("sensor.capbreton_weather_alert", 'Vert') %}
+            99
+          {% elif is_state("sensor.capbreton_weather_alert", 'Jaune') %}
+            98
+          {% elif is_state("sensor.capbreton_weather_alert", 'Orange') %}
+            97
+          {% elif is_state("sensor.capbreton_weather_alert", 'Rouge') %}
+            96
+          {% else %}
+           100
+          {% endif %}
+       friendly_name: Alerte Meteo France
+ - platform: template
+   sensors:
+      alerte_gel:
+       value_template: >-
+         {% set alert = states('sensor.capbreton_freeze_chance') | float  %}
+               {%- if alert > 10 -%}
+                102
+               {% else %}
+                1
+                {%- endif -%}
+ - platform: template
+   sensors:
+      alerte_neige:
+       value_template: >-
+         {% set alert = states('sensor.capbreton_snow_chance') | float  %}
+               {%- if alert > 10 -%}
+                103
+               {% else %}
+                1
+                {%- endif -%}
+ - platform: template
+   sensors:
+      alerte_orage:
+       value_template: >-
+         {% set alert = states('sensor.capbreton_thunder_chance') | float  %}
+               {%- if alert > 10 -%}
+                101
+               {% else %}
+                1
+                {%- endif -%}
+
+# Pour les trois détecteur supplémentaires
+ - platform: template
+   sensors:
+      ordie_la:
+       value_template: >-
+          {% if is_state("device_tracker.desktop_gqs2re3_2", 'home') %}
+            108
+          {% else %}
+            107
+                {%- endif -%}
+ - platform: template
+   sensors:
+      espfreebox:
+       value_template: >-
+          {% if is_state("device_tracker.espfreebox", 'home') %}
+            108
+          {% else %}
+            107
+                {%- endif -%}
+ - platform: template
+   sensors:
+      freebox_player:
+       value_template: >-
+          {% if is_state("device_tracker.freebox_player_2", 'home') %}
+            108
+          {% else %}
+            107
+                {%- endif -%}
+
+# Quelles sont les alertes les plus importantes a affiché
+ # Si l'alerte est rouge, on ne prend que les type d alerte en rouge les {{}} agrége les données
+ # states.sensor.capbreton_weather_alert.attributes['Vagues-submersion'] permet de passer les caractére spéciaux et espace
+ - platform: template
+   sensors:
+     text_alert:
+      value_template: >-
+        {% if is_state("sensor.capbreton_weather_alert", 'Rouge') %}
+         {% if states['sensor.capbreton_weather_alert'].attributes.Vent_violent == 'Rouge' %}
+          {{'Vent violent '}}
+         {% endif %}
+         {% if states['sensor.capbreton_weather_alert'].attributes.Inondation == 'Rouge' %}
+           {{'Inondation '}}
+         {% endif %}
+         {% if states['sensor.capbreton_weather_alert'].attributes.Canicule == 'Rouge' %}
+           {{'Canicule; '}}
+         {% endif %}
+         {% if states['sensor.capbreton_weather_alert'].attributes.Avalanches == 'Rouge' %}
+           {{'Avalanches '}}
+         {% endif %}
+         {% if states['sensor.capbreton_weather_alert'].attributes.Orages == 'Rouge' %}
+           {{'Orages '}}
+         {% endif %}
+         {% if states.sensor.capbreton_weather_alert.attributes['Pluie-innodation'] == 'Rouge' %}
+           {{'Pluie et innodation '}}
+         {% endif %}
+         {% if states.sensor.capbreton_weather_alert.attributes['Neige-verglas'] == 'Rouge' %}
+           {{'Neige et verglas '}}
+         {% endif %}
+         {% if states.sensor.capbreton_weather_alert.attributes['Grand-froid'] == 'Rouge' %}
+           {{'Grand froid '}}
+         {% endif %}
+         {% if states.sensor.capbreton_weather_alert.attributes['Vagues-submersion'] == 'Rouge' %}
+           {{'Vagues et submersion '}}
+         {% endif %}
+        {% elif is_state("sensor.capbreton_weather_alert", 'Orange') %}
+         {% if states['sensor.capbreton_weather_alert'].attributes.Vent_violent == 'Orange' %}
+          {{'Vent violent '}}
+         {% endif %}
+         {% if states['sensor.capbreton_weather_alert'].attributes.Inondation == 'Orange' %}
+           {{'Inondation '}}
+         {% endif %}
+         {% if states['sensor.capbreton_weather_alert'].attributes.Canicule == 'Orange' %}
+           {{'Canicule '}}
+         {% endif %}
+         {% if states['sensor.capbreton_weather_alert'].attributes.Avalanches == 'Orange' %}
+           {{'Avalanches '}}
+         {% endif %}
+         {% if states['sensor.capbreton_weather_alert'].attributes.Orages == 'Orange' %}
+           {{'Orages '}}
+         {% endif %}
+         {% if states.sensor.capbreton_weather_alert.attributes['Pluie-innodation'] == 'Orange' %}
+           {{'Pluie et innodation '}}
+         {% endif %}
+         {% if states.sensor.capbreton_weather_alert.attributes['Neige-verglas'] == 'Orange' %}
+           {{'Neige et verglas '}}
+         {% endif %}
+         {% if states.sensor.capbreton_weather_alert.attributes['Grand-froid'] == 'Orange' %}
+           {{'Grand froid '}}
+         {% endif %}
+         {% if states.sensor.capbreton_weather_alert.attributes['Vagues-submersion'] == 'Orange' %}
+           {{'Vagues et submersion '}}
+         {% endif %}
+        {% elif is_state("sensor.capbreton_weather_alert", 'Jaune') %}
+         {% if states['sensor.capbreton_weather_alert'].attributes.Vent_violent == 'Jaune' %}
+          {{'Vent violent '}}
+         {% endif %}
+         {% if states['sensor.capbreton_weather_alert'].attributes.Inondation == 'Jaune' %}
+           {{'Inondation '}}
+         {% endif %}
+         {% if states['sensor.capbreton_weather_alert'].attributes.Canicule == 'Jaune' %}
+           {{'Canicule '}}
+         {% endif %}
+         {% if states['sensor.capbreton_weather_alert'].attributes.Avalanches == 'Jaune' %}
+           {{'Avalanches '}}
+         {% endif %}
+         {% if states['sensor.capbreton_weather_alert'].attributes.Orages == 'Jaune' %}
+           {{'Orages '}}
+         {% endif %}
+         {% if states.sensor.capbreton_weather_alert.attributes['Pluie-innodation'] == 'Jaune' %}
+           {{'Pluie et innodation '}}
+         {% endif %}
+         {% if states.sensor.capbreton_weather_alert.attributes['Neige-verglas'] == 'Jaune' %}
+           {{'Neige et verglas '}}
+         {% endif %}
+         {% if states.sensor.capbreton_weather_alert.attributes['Grand-froid'] == 'Jaune' %}
+           {{'Grand froid '}}
+         {% endif %}
+         {% if states.sensor.capbreton_weather_alert.attributes['Vagues-submersion'] == 'Jaune' %}
+           {{'Vagues et submersion '}}
+         {% endif %}
+        {% else %}
+         Aucune alerte.
+        {% endif %}
+      friendly_name: text alert
+      
+
+# ----------------------------------- BINARY SENSOR ----------------------------------------------------------------------------
+binary_sensor:
+
+# Presence pour eteidre l ecran - Merci à Paradis Artificiels -  simplifie avec juste la detection du portable sur le wifi
+  - platform: template
+    sensors:
+      somebody_home:
+        value_template: >-
+          {{ is_state('person.axel', 'home')
+             or is_state('person.philipe', 'home')}}
+# Pour iot link
+  - platform: mqtt
+    name: "My Computer - Connected"
+    state_topic: "iotlink/workgroup/my-computer/lwt"
+    value_template: "{{ value }}"
+    payload_on: "ON"
+    payload_off: "OFF"
+    device_class: "connectivity"
+    qos: 1
+
+  - platform: mqtt
+    name: "My Computer - Charging"
+    state_topic: "iotlink/workgroup/my-computer/windows-monitor/stats/power/status"
+    value_template: "{{ value }}"
+    payload_on: "Online"
+    payload_off: "Offline"
+    device_class: "plug"
+    availability_topic: "iotlink/workgroup/my-computer/lwt"
+    payload_available: "ON"
+    payload_not_available: "OFF"
+    qos: 1
+
+  - platform: mqtt
+    name: "My Computer - Battery Status"
+    state_topic: "iotlink/workgroup/my-computer/windows-monitor/stats/battery/status"
+    value_template: "{{ value }}"
+    payload_on: "Online"
+    payload_off: "Offline"
+    device_class: "plug"
+    availability_topic: "iotlink/workgroup/my-computer/lwt"
+    payload_available: "ON"
+    payload_not_available: "OFF"
+    qos: 1
+
+#------------------------------------------------------- camera ----------------------------------------------------------
+camera:
+
+#------------------------------------------------------- switch ----------------------------------------------------------
+switch:
+# interrupteur ordi
+  - platform: template
+    switches:
+      my_computer:
+        friendly_name: "My Computer"
+        value_template: "{{ is_state('binary_sensor.desktop-gqs2re3_connected', 'on') }}"
+        turn_on:
+          service: script.my_computer_wake
+        turn_off:
+          service: script.my_computer_shutdown
+        icon_template: mdi:laptop
+
+
+
+
+
+
