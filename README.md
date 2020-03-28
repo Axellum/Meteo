@@ -4,7 +4,7 @@
 
 Affichage météo avec interaction sur les objets Home assistant:
 
-[![ESPHome Logo](http://axellum.free.fr/presentationmeteo.jpg)]()
+[![ESPHome Logo](http://axellum.free.fr/ecran.png)](https://www.facebook.com/pg/Station-Météo-France-et-commandes-diverses-sur-écran-Nextion-102829114681432/)
 
     Matériel:
         Écran Nextion NX4832T035 (3.5p) à 30€
