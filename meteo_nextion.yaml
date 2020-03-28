@@ -1,7 +1,7 @@
 # This is ESPHome configuration file. This goes to the esphome folder
 # You need to provide your WiFi ssis/password and passwords for API and OTA (or put them in your esphome/secrets.yaml)
 esphome:
-  name: ha_dash
+  name: meteo_fr
   platform: ESP8266
   board: nodemcuv2
 wifi:
@@ -36,6 +36,291 @@ globals:
    type: std::string
    initial_value: ' '
  - id: display_on             # Is display on?
+   type: bool
+
+display:
+  - platform: nextion
+    id: teplomer
+    update_interval: 3s
+    lambda: |-
+             it.set_wait_for_ack(false);
+             if (id(somebody_home).state) {
+              if (!id(display_on)) {
+               it.set_backlight_brightness(50);
+               id(display_on)=true;
+              }
+                auto time = id(sntp_time).now();
+                it.set_component_text_printf("heure","%02d",time.hour);
+                it.set_component_text_printf("minute","%02d",time.minute);
+                it.set_component_text_printf("client",id(pi_hole_dns_unique_clients).state.c_str());
+                it.set_component_text_printf("date",id(date_simple).state.c_str());
+                it.send_command_printf("%s.pic=%.0f", "icon",id(today_icon).state);
+                it.send_command_printf("%s.pic=%.0f", "icon_dem",id(today_icon1).state);
+                it.send_command_printf("%s.pic=%.0f", "icon_2j",id(today_icon2).state);
+                it.send_command_printf("%s.pic=%.0f", "Icon_3j",id(today_icon3).state);
+                it.send_command_printf("%s.pic=%.0f","alerte_meteo",id(alerte_coul).state);
+                it.send_command_printf("%s.pic=%.0f","gel",id(alerte_gel).state);
+                it.send_command_printf("%s.pic=%.0f","neige",id(alerte_neige).state);
+                it.send_command_printf("%s.pic=%.0f","foudre",id(alerte_orage).state);
+                it.send_command_printf("%s.pic=%.0f","detect1",id(ordie_la).state);
+                it.send_command_printf("%s.pic=%.0f","detect2",id(espfreebox).state);
+                it.send_command_printf("%s.pic=%.0f","detect3",id(freebox_player).state);
+                it.set_component_text_printf("alerte_der","%s",id(text_alert).state.c_str());
+                it.set_component_text_printf("humi_ext","%.0f",id(dark_sky_humidity).state);
+                it.set_component_text_printf("temp_ext","%.0f",id(temp_outside).state);
+                it.set_component_text_printf("humi",id(humi).state.c_str());
+                it.set_component_text_printf("uv",id(uv).state.c_str());
+                it.set_component_text_printf("pression",id(pression).state.c_str());
+                it.set_component_text_printf("temp_int",id(temperature).state.c_str());
+                it.set_component_text_printf("text_pluis","%s",id(pluis_proch).state.c_str());
+                it.set_component_text_printf("pluvio_s",id(capbreton_rain_chance).state.c_str());
+                it.set_component_text_printf("t9","%.0f",id(dark_sky_overnight_low_temperature_1d).state);
+                it.set_component_text_printf("t10","%.0f",id(dark_sky_overnight_low_temperature_2d).state);
+                it.set_component_text_printf("t11","%.0f",id(dark_sky_overnight_low_temperature_3d).state);
+                it.set_component_text_printf("t12","%.0f",id(dark_sky_daytime_high_temperature_1d).state);
+                it.set_component_text_printf("t13","%.0f",id(dark_sky_daytime_high_temperature_2d).state);
+                it.set_component_text_printf("t14","%.0f",id(dark_sky_daytime_high_temperature_3d).state);
+                it.set_component_text_printf("t15","%.0f",id(capbreton_wind_speed).state);
+                it.set_component_value("uc", id(processor_use).state);
+                it.set_component_value("disque", id(disk_use_percent).state);
+                it.set_component_value("ram", id(memory_use_percent).state);
+             } else {
+              if (id(display_on)) {
+                it.set_backlight_brightness(0);
+                 id(display_on)=false;
+              }
+             }
+#-------------------------- sensor ------------------------------------------------------------------------------------------
+sensor:
+
+  - platform: homeassistant
+    id: temp_outside    
+    entity_id: sensor.capbreton_temperature
+    accuracy_decimals: 0
+
+  - platform: homeassistant
+    id: dark_sky_humidity
+    entity_id: sensor.dark_sky_humidity
+    accuracy_decimals: 0
+
+  - platform: homeassistant
+    id: today_icon
+    entity_id: sensor.today_icon
+
+  - platform: homeassistant
+    id: today_icon1
+    entity_id: sensor.today_icon1
+
+  - platform: homeassistant
+    id: today_icon2
+    entity_id: sensor.today_icon2
+
+  - platform: homeassistant
+    id: today_icon3
+    entity_id: sensor.today_icon3
+
+  - platform: homeassistant
+    id: disk_use_percent    
+    entity_id: sensor.gauge_disque 
+    accuracy_decimals: 0
+
+  - platform: homeassistant
+    id: processor_use
+    entity_id: sensor.gauge_uc
+    accuracy_decimals: 0
+
+  - platform: homeassistant
+    id: memory_use_percent
+    entity_id: sensor.gauge_ram
+    accuracy_decimals: 0
+
+  - platform: homeassistant
+    id: dark_sky_daytime_high_temperature_1d
+    entity_id: sensor.dark_sky_daytime_high_temperature_1d
+
+  - platform: homeassistant
+    id: dark_sky_daytime_high_temperature_2d
+    entity_id: sensor.dark_sky_daytime_high_temperature_2d
+
+  - platform: homeassistant 
+    id: dark_sky_daytime_high_temperature_3d 
+    entity_id: sensor.dark_sky_daytime_high_temperature_3d
+
+  - platform: homeassistant
+    id: dark_sky_overnight_low_temperature_1d    
+    entity_id: sensor.dark_sky_overnight_low_temperature_1d
+
+  - platform: homeassistant
+    id: dark_sky_overnight_low_temperature_2d    
+    entity_id: sensor.dark_sky_overnight_low_temperature_2d  
+
+  - platform: homeassistant
+    id: dark_sky_overnight_low_temperature_3d    
+    entity_id: sensor.dark_sky_overnight_low_temperature_3d 
+
+  - platform: homeassistant
+    id: capbreton_wind_speed    
+    entity_id: sensor.capbreton_wind_speed
+
+  - platform: homeassistant   # Outside temperature
+    id: alerte_coul    
+    entity_id:  sensor.alerte_coul
+
+  - platform: homeassistant   # Outside temperature
+    id: alerte_gel    
+    entity_id:  sensor.alerte_gel
+
+  - platform: homeassistant   # Outside temperature
+    id: alerte_neige    
+    entity_id:  sensor.alerte_neige
+
+  - platform: homeassistant   # Outside temperature
+    id: alerte_orage    
+    entity_id:  sensor.alerte_orage
+
+  - platform: homeassistant   # Outside temperature
+    id: ordie_la    
+    entity_id:  sensor.ordie_la
+
+  - platform: homeassistant   # Outside temperature
+    id: espfreebox    
+    entity_id: sensor.espfreebox
+
+  - platform: homeassistant   # Outside temperature
+    id: freebox_player    
+    entity_id:  sensor.freebox_player2
+
+#-------------------------- text_sensor ------------------------------------------------------------------------------------------
+text_sensor:
+
+  - platform: homeassistant
+    id: capbreton_weather
+    entity_id: sensor.sans_accent
+
+  - platform: homeassistant
+    id: capbreton_rain_chance
+    entity_id: sensor.capbreton_rain_chance
+
+  - platform: homeassistant
+    id: text_alert
+    entity_id: sensor.text_alert
+
+  - platform: homeassistant
+    id: date_simple
+    entity_id: sensor.date_simple
+
+  - platform: homeassistant
+    id: pi_hole_dns_unique_clients
+    entity_id: sensor.pi_hole_dns_unique_clients
+
+  - platform: homeassistant   # Outside temperature
+    id: temperature    
+    entity_id: sensor.temperature
+
+  - platform: homeassistant   # Outside temperature
+    id: humi    
+    entity_id: sensor.humidite
+
+  - platform: homeassistant   # Outside temperature
+    id: uv    
+    entity_id: sensor.capbreton_uv  
+
+  - platform: homeassistant   # Outside temperature
+    id: pression    
+    entity_id: sensor.pression
+
+  - platform: homeassistant   # Outside temperature
+    id: pluis_proch    
+    entity_id:  sensor.pluis_proch
+
+#-------------------------- binary_sensor ------------------------------------------------------------------------------------------
+binary_sensor:
+
+  - platform: homeassistant
+    id: somebody_home
+    entity_id: binary_sensor.somebody_home
+
+  - platform: nextion
+    page_id: 0
+    component_id: 53
+    id: btn
+    on_press:
+      then:
+        - homeassistant.service:
+            service: script.my_computer_wake
+
+  - platform: nextion
+    page_id: 1
+    component_id: 14
+    id: int_hass
+    on_press:
+      then:
+        - homeassistant.service:
+            service: script.reboot_ha
+
+  - platform: nextion
+    page_id: 1
+    component_id: 10
+    id: int_pc
+    on_press:
+      then:
+        - homeassistant.service:
+            service: script.my_computer_displays_off
+
+  - platform: nextion
+    page_id: 1
+    component_id: 15
+    id: int_tv
+    on_press:
+      then:
+        - homeassistant.service:
+            service: script.my_computer_run_chrome
+
+  - platform: nextion
+    page_id: 2
+    component_id: 12
+    id: btn_2
+    on_press:
+      then:
+        - homeassistant.service:
+            service: script.my_computer_shutdown
+
+  - platform: nextion
+    page_id: 1
+    component_id: 11
+    id: btn_1
+    on_press:
+      then:
+        - homeassistant.service:
+            service: script.my_computer_wake
+
+  - platform: nextion
+    page_id: 1
+    component_id: 13
+    id: btn_5
+    on_press:
+      then:
+        - homeassistant.service:
+
+            service: script.my_computer_vol_mute
+
+  - platform: nextion
+    page_id: 1
+    component_id: 12
+    id: btn_3
+    on_press:
+      then:
+        - homeassistant.service:
+            service: script.my_computer_reboot
+
+  - platform: nextion
+    page_id: 2
+    component_id: 14
+    id: btn_4
+    on_press:
+      then:
+        - homeassistant.service:
+            service: script.my_computer_run_ccleaner
    type: bool
 
 display:
