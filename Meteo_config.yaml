@@ -23,12 +23,6 @@ pi_hole:
   host: localhost:4865
   api_key: ""
 
-mqtt:
-  broker: a0d7b954-mqtt
-  username: !secret mqtt_username
-  password: !secret mqtt_password
-  client_id: home-assistant
-
 wake_on_lan:
 
 meteo_france:
