@@ -351,7 +351,7 @@ sensor:
           {% elif is_state("sensor.capbreton_weather", 'Très nuageux') %}
             37
           {% elif is_state("sensor.capbreton_weather", 'Brume') %}
-            41
+            69
           {% elif is_state("sensor.capbreton_weather", 'bancs de brouillard') %}
             56
           {% elif is_state("sensor.capbreton_weather", 'Brouillard givrant') %}
