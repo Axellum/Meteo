@@ -156,79 +156,35 @@ sensor:
         {% set months = ["Jan", "Fev", "Mar", "Avr", "Mai", "Juin", "Juil", "Août", "Sep", "Oct", "Nov", "Dec"] %}
         {{ now().day | string + ' ' + months[now().month-1] }}
 
-# Groupage des icones sur trois jours
- - platform: template
-   sensors:
-      dark_sky_current_text_dem:
-        value_template: >-
-             {% if is_state("sensor.dark_sky_icon_1d","clear-day") %} Clear 
-             {% elif is_state("sensor.dark_sky_icon_1d","clear-night") %} Clear 
-             {% elif is_state("sensor.dark_sky_icon_1d","rain") %} Rain
-             {% elif is_state("sensor.dark_sky_icon_1d","snow") %} Snowy
-             {% elif is_state("sensor.dark_sky_icon_1d","fog") %} Foggy
-             {% elif is_state("sensor.dark_sky_icon_1d","sleet") %} Sleet
-             {% elif is_state("sensor.dark_sky_icon_1d","wind") %} Windy
-             {% elif is_state("sensor.dark_sky_icon_1d","cloudy") %} Cloudy
-             {% elif is_state("sensor.dark_sky_icon_1d","partly-cloudy-day") %} Partly Cloudy
-             {% elif is_state("sensor.dark_sky_icon_1d","partly-cloudy-night") %} Partly Cloudy
-             {% elif is_state("sensor.dark_sky_icon_1d","hail") %} Hailing
-             {% elif is_state("sensor.dark_sky_icon_1d","lightning") %} Lightning
-             {% elif is_state("sensor.dark_sky_icon_1d","thunderstorm") %} Thunderstorm
-             {% endif %}
-      dark_sky_current_text_2j:
-        value_template: >-
-             {% if is_state("sensor.dark_sky_icon_2d","clear-day") %} Clear 
-             {% elif is_state("sensor.dark_sky_icon_2d","clear-night") %} Clear 
-             {% elif is_state("sensor.dark_sky_icon_2d","rain") %} Rain
-             {% elif is_state("sensor.dark_sky_icon_2d","snow") %} Snowy
-             {% elif is_state("sensor.dark_sky_icon_2d","fog") %} Foggy
-             {% elif is_state("sensor.dark_sky_icon_2d","sleet") %} Sleet
-             {% elif is_state("sensor.dark_sky_icon_2d","wind") %} Windy
-             {% elif is_state("sensor.dark_sky_icon_2d","cloudy") %} Cloudy
-             {% elif is_state("sensor.dark_sky_icon_2d","partly-cloudy-day") %} Partly Cloudy
-             {% elif is_state("sensor.dark_sky_icon_2d","partly-cloudy-night") %} Partly Cloudy
-             {% elif is_state("sensor.dark_sky_icon_2d","hail") %} Hailing
-             {% elif is_state("sensor.dark_sky_icon_2d","lightning") %} Lightning
-             {% elif is_state("sensor.dark_sky_icon_2d","thunderstorm") %} Thunderstorm
-             {% endif %}
-      dark_sky_current_text_3j:
-        value_template: >-
-             {% if is_state("sensor.dark_sky_icon_3d","clear-day") %} Clear 
-             {% elif is_state("sensor.dark_sky_icon_3d","clear-night") %} Clear 
-             {% elif is_state("sensor.dark_sky_icon_3d","rain") %} Rain
-             {% elif is_state("sensor.dark_sky_icon_3d","snow") %} Snowy
-             {% elif is_state("sensor.dark_sky_icon_3d","fog") %} Foggy
-             {% elif is_state("sensor.dark_sky_icon_3d","sleet") %} Sleet
-             {% elif is_state("sensor.dark_sky_icon_3d","wind") %} Windy
-             {% elif is_state("sensor.dark_sky_icon_3d","cloudy") %} Cloudy
-             {% elif is_state("sensor.dark_sky_icon_3d","partly-cloudy-day") %} Partly Cloudy
-             {% elif is_state("sensor.dark_sky_icon_3d","partly-cloudy-night") %} Partly Cloudy
-             {% elif is_state("sensor.dark_sky_icon_3d","hail") %} Hailing
-             {% elif is_state("sensor.dark_sky_icon_3d","lightning") %} Lightning
-             {% elif is_state("sensor.dark_sky_icon_3d","thunderstorm") %} Thunderstorm
-             {% endif %}
-# Icone des trois jours suivant en prenant les groupages
+# Icone des trois jours suivant, vérifié que les iconnes correspondent au temps qu il fait, et que tout les termes soit les bons.
+#
  - platform: template
    sensors:
      today_icon1:
       value_template: >-
-          {% if is_state("sensor.dark_sky_current_text_dem", 'Clear') %}
+          {% if state_attr("weather.capbreton","forecast")[0].condition == 'Clear' %}
             6
-          {% elif is_state("sensor.dark_sky_current_text_dem", 'Cloudy') %}
+          {% elif state_attr("weather.capbreton","forecast")[0].condition == 'sunny' %}
+            6
+          {% elif state_attr("weather.capbreton","forecast")[0].condition == 'cloudy' %}
             3
-          {% elif is_state("sensor.dark_sky_current_text_dem", 'Foggy') %}
+          {% elif state_attr("weather.capbreton","forecast")[0].condition == 'fog' %}
             4
-          {% elif is_state("sensor.dark_sky_current_text_dem", 'Hailing') %}
+          {% elif state_attr("weather.capbreton","forecast")[0].condition == 'hail' %}
             7
-          {% elif is_state("sensor.dark_sky_current_text_dem", 'lightning') %}
+          {% elif state_attr("weather.capbreton","forecast")[0].condition == 'lightning' %}
             11
-          {% elif is_state("sensor.dark_sky_current_text_dem", 'Partly Cloudy') %}
+          {% elif state_attr("weather.capbreton","forecast")[0].condition == 'partlycloudy' %}
             5
-          {% elif is_state("sensor.dark_sky_current_text_dem", 'Rain') %}
+          {% elif state_attr("weather.capbreton","forecast")[0].condition == 'rainy' %}
             8
-          {% elif is_state("sensor.dark_sky_current_text_dem", 'Snowy') %}
+          {% elif state_attr("weather.capbreton","forecast")[0].condition == 'pouring' %}
+            8
+          {% elif state_attr("weather.capbreton","forecast")[0].condition == 'snowy' %}
             10
-          {% elif is_state("sensor.dark_sky_current_text_dem", 'Windy') %}
+          {% elif state_attr("weather.capbreton","forecast")[0].condition == 'snowy-rainy' %}
+            10
+          {% elif state_attr("weather.capbreton","forecast")[0].condition == 'windy' %}
             9
           {% else %}
             2
@@ -238,55 +194,66 @@ sensor:
    sensors:
      today_icon2:
       value_template: >-
-      
-          {% if is_state("sensor.dark_sky_current_text_2j", 'Clear') %}
+          {% if state_attr("weather.capbreton","forecast")[1].condition == 'Clear' %}
             26
-          {% elif is_state("sensor.dark_sky_current_text_2j", 'Cloudy') %}
+          {% elif state_attr("weather.capbreton","forecast")[1].condition == 'sunny' %}
+            26
+          {% elif state_attr("weather.capbreton","forecast")[1].condition == 'cloudy' %}
             23
-          {% elif is_state("sensor.dark_sky_current_text_2j", 'Foggy') %}
+          {% elif state_attr("weather.capbreton","forecast")[1].condition == 'fog' %}
             24
-          {% elif is_state("sensor.dark_sky_current_text_2j", 'Hailing') %}
+          {% elif state_attr("weather.capbreton","forecast")[1].condition == 'hail' %}
             27
-          {% elif is_state("sensor.dark_sky_current_text_2j", 'lightning') %}
+          {% elif state_attr("weather.capbreton","forecast")[1].condition == 'lightning' %}
             31
-          {% elif is_state("sensor.dark_sky_current_text_2j", 'Partly Cloudy') %}
+          {% elif state_attr("weather.capbreton","forecast")[1].condition == 'partlycloudy' %}
             25
-          {% elif is_state("sensor.dark_sky_current_text_2j", 'Rain') %}
+          {% elif state_attr("weather.capbreton","forecast")[1].condition == 'rainy' %}
             28
-          {% elif is_state("sensor.dark_sky_current_text_2j", 'Snowy') %}
+          {% elif state_attr("weather.capbreton","forecast")[1].condition == 'pouring' %}
+            28
+          {% elif state_attr("weather.capbreton","forecast")[1].condition == 'snowy' %}
             30
-          {% elif is_state("sensor.dark_sky_current_text_2j", 'Windy') %}
+          {% elif state_attr("weather.capbreton","forecast")[1].condition == 'snowy-rainy' %}
+            30
+          {% elif state_attr("weather.capbreton","forecast")[1].condition == 'windy' %}
             29
           {% else %}
             22
           {% endif %}
-      friendly_name: temps 3 jours
+      friendly_name: temps 2 jours
  - platform: template
    sensors:
      today_icon3:
       value_template: >-
-          {% if is_state("sensor.dark_sky_current_text_3j", 'Clear') %}
+          {% if state_attr("weather.capbreton","forecast")[2].condition == 'Clear' %}
             16
-          {% elif is_state("sensor.dark_sky_current_text_3j", 'Cloudy') %}
+          {% elif state_attr("weather.capbreton","forecast")[2].condition == 'sunny' %}
+            16
+          {% elif state_attr("weather.capbreton","forecast")[2].condition == 'cloudy' %}
             13
-          {% elif is_state("sensor.dark_sky_current_text_3j", 'Foggy') %}
+          {% elif state_attr("weather.capbreton","forecast")[2].condition == 'fog' %}
             14
-          {% elif is_state("sensor.dark_sky_current_text_3j", 'Hailing') %}
+          {% elif state_attr("weather.capbreton","forecast")[2].condition == 'hail' %}
             17
-          {% elif is_state("sensor.dark_sky_current_text_3j", 'lightning') %}
+          {% elif state_attr("weather.capbreton","forecast")[2].condition == 'lightning' %}
             21
-          {% elif is_state("sensor.dark_sky_current_text_3j", 'Partly Cloudy') %}
+          {% elif state_attr("weather.capbreton","forecast")[2].condition == 'partlycloudy' %}
             15
-          {% elif is_state("sensor.dark_sky_current_text_3j", 'Rain') %}
+          {% elif state_attr("weather.capbreton","forecast")[2].condition == 'rainy' %}
             18
-          {% elif is_state("sensor.dark_sky_current_text_3j", 'Snowy') %}
+          {% elif state_attr("weather.capbreton","forecast")[2].condition == 'pouring' %}
+            18
+          {% elif state_attr("weather.capbreton","forecast")[2].condition == 'snowy' %}
             20
-          {% elif is_state("sensor.dark_sky_current_text_3j", 'Windy') %}
+          {% elif state_attr("weather.capbreton","forecast")[2].condition == 'snowy-rainy' %}
+            20
+          {% elif state_attr("weather.capbreton","forecast")[2].condition == 'windy' %}
             19
           {% else %}
             12
           {% endif %}
-      friendly_name: temps 2 jours
+      friendly_name: temps 3 jours
 
 # Calcul pour transformé le pourcentage en degres pour les jauges pour 0=318° ; 100%=225° ; ((360-318)+225)/100=2.67
 # Donc 1%=2.67° ; Soit x le pencentage à afficher et y l'angle de l'aiguille:
@@ -645,6 +612,143 @@ switch:
         icon_template: mdi:laptop
 
 
+# OPSOLETTE!!!
+
+
+# Ancien affichage avec dark sky bientot arrete, remplacer par meteo france
+#Gardé a titre d exemple / base de codage
+# Groupage des icones sur trois jours
+# dans la partie sensor:
+ - platform: template
+   sensors:
+      dark_sky_current_text_dem:
+        value_template: >-
+             {% if is_state("sensor.dark_sky_icon_1d","clear-day") %} Clear 
+             {% elif is_state("sensor.dark_sky_icon_1d","clear-night") %} Clear 
+             {% elif is_state("sensor.dark_sky_icon_1d","rain") %} Rain
+             {% elif is_state("sensor.dark_sky_icon_1d","snow") %} Snowy
+             {% elif is_state("sensor.dark_sky_icon_1d","fog") %} Foggy
+             {% elif is_state("sensor.dark_sky_icon_1d","sleet") %} Sleet
+             {% elif is_state("sensor.dark_sky_icon_1d","wind") %} Windy
+             {% elif is_state("sensor.dark_sky_icon_1d","cloudy") %} Cloudy
+             {% elif is_state("sensor.dark_sky_icon_1d","partly-cloudy-day") %} Partly Cloudy
+             {% elif is_state("sensor.dark_sky_icon_1d","partly-cloudy-night") %} Partly Cloudy
+             {% elif is_state("sensor.dark_sky_icon_1d","hail") %} Hailing
+             {% elif is_state("sensor.dark_sky_icon_1d","lightning") %} Lightning
+             {% elif is_state("sensor.dark_sky_icon_1d","thunderstorm") %} Thunderstorm
+             {% endif %}
+      dark_sky_current_text_2j:
+        value_template: >-
+             {% if is_state("sensor.dark_sky_icon_2d","clear-day") %} Clear 
+             {% elif is_state("sensor.dark_sky_icon_2d","clear-night") %} Clear 
+             {% elif is_state("sensor.dark_sky_icon_2d","rain") %} Rain
+             {% elif is_state("sensor.dark_sky_icon_2d","snow") %} Snowy
+             {% elif is_state("sensor.dark_sky_icon_2d","fog") %} Foggy
+             {% elif is_state("sensor.dark_sky_icon_2d","sleet") %} Sleet
+             {% elif is_state("sensor.dark_sky_icon_2d","wind") %} Windy
+             {% elif is_state("sensor.dark_sky_icon_2d","cloudy") %} Cloudy
+             {% elif is_state("sensor.dark_sky_icon_2d","partly-cloudy-day") %} Partly Cloudy
+             {% elif is_state("sensor.dark_sky_icon_2d","partly-cloudy-night") %} Partly Cloudy
+             {% elif is_state("sensor.dark_sky_icon_2d","hail") %} Hailing
+             {% elif is_state("sensor.dark_sky_icon_2d","lightning") %} Lightning
+             {% elif is_state("sensor.dark_sky_icon_2d","thunderstorm") %} Thunderstorm
+             {% endif %}
+      dark_sky_current_text_3j:
+        value_template: >-
+             {% if is_state("sensor.dark_sky_icon_3d","clear-day") %} Clear 
+             {% elif is_state("sensor.dark_sky_icon_3d","clear-night") %} Clear 
+             {% elif is_state("sensor.dark_sky_icon_3d","rain") %} Rain
+             {% elif is_state("sensor.dark_sky_icon_3d","snow") %} Snowy
+             {% elif is_state("sensor.dark_sky_icon_3d","fog") %} Foggy
+             {% elif is_state("sensor.dark_sky_icon_3d","sleet") %} Sleet
+             {% elif is_state("sensor.dark_sky_icon_3d","wind") %} Windy
+             {% elif is_state("sensor.dark_sky_icon_3d","cloudy") %} Cloudy
+             {% elif is_state("sensor.dark_sky_icon_3d","partly-cloudy-day") %} Partly Cloudy
+             {% elif is_state("sensor.dark_sky_icon_3d","partly-cloudy-night") %} Partly Cloudy
+             {% elif is_state("sensor.dark_sky_icon_3d","hail") %} Hailing
+             {% elif is_state("sensor.dark_sky_icon_3d","lightning") %} Lightning
+             {% elif is_state("sensor.dark_sky_icon_3d","thunderstorm") %} Thunderstorm
+             {% endif %}
+# Icone des trois jours suivant en prenant les groupages
+ - platform: template
+   sensors:
+     today_icon1:
+      value_template: >-
+          {% if is_state("sensor.dark_sky_current_text_dem", 'Clear') %}
+            6
+          {% elif is_state("sensor.dark_sky_current_text_dem", 'Cloudy') %}
+            3
+          {% elif is_state("sensor.dark_sky_current_text_dem", 'Foggy') %}
+            4
+          {% elif is_state("sensor.dark_sky_current_text_dem", 'Hailing') %}
+            7
+          {% elif is_state("sensor.dark_sky_current_text_dem", 'lightning') %}
+            11
+          {% elif is_state("sensor.dark_sky_current_text_dem", 'Partly Cloudy') %}
+            5
+          {% elif is_state("sensor.dark_sky_current_text_dem", 'Rain') %}
+            8
+          {% elif is_state("sensor.dark_sky_current_text_dem", 'Snowy') %}
+            10
+          {% elif is_state("sensor.dark_sky_current_text_dem", 'Windy') %}
+            9
+          {% else %}
+            2
+          {% endif %}
+      friendly_name: temps 1 jours
+ - platform: template
+   sensors:
+     today_icon2:
+      value_template: >-
+      
+          {% if is_state("sensor.dark_sky_current_text_2j", 'Clear') %}
+            26
+          {% elif is_state("sensor.dark_sky_current_text_2j", 'Cloudy') %}
+            23
+          {% elif is_state("sensor.dark_sky_current_text_2j", 'Foggy') %}
+            24
+          {% elif is_state("sensor.dark_sky_current_text_2j", 'Hailing') %}
+            27
+          {% elif is_state("sensor.dark_sky_current_text_2j", 'lightning') %}
+            31
+          {% elif is_state("sensor.dark_sky_current_text_2j", 'Partly Cloudy') %}
+            25
+          {% elif is_state("sensor.dark_sky_current_text_2j", 'Rain') %}
+            28
+          {% elif is_state("sensor.dark_sky_current_text_2j", 'Snowy') %}
+            30
+          {% elif is_state("sensor.dark_sky_current_text_2j", 'Windy') %}
+            29
+          {% else %}
+            22
+          {% endif %}
+      friendly_name: temps 3 jours
+ - platform: template
+   sensors:
+     today_icon3:
+      value_template: >-
+          {% if is_state("sensor.dark_sky_current_text_3j", 'Clear') %}
+            16
+          {% elif is_state("sensor.dark_sky_current_text_3j", 'Cloudy') %}
+            13
+          {% elif is_state("sensor.dark_sky_current_text_3j", 'Foggy') %}
+            14
+          {% elif is_state("sensor.dark_sky_current_text_3j", 'Hailing') %}
+            17
+          {% elif is_state("sensor.dark_sky_current_text_3j", 'lightning') %}
+            21
+          {% elif is_state("sensor.dark_sky_current_text_3j", 'Partly Cloudy') %}
+            15
+          {% elif is_state("sensor.dark_sky_current_text_3j", 'Rain') %}
+            18
+          {% elif is_state("sensor.dark_sky_current_text_3j", 'Snowy') %}
+            20
+          {% elif is_state("sensor.dark_sky_current_text_3j", 'Windy') %}
+            19
+          {% else %}
+            12
+          {% endif %}
+      friendly_name: temps 2 jours
 
 
 
