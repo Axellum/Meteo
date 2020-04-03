@@ -30,47 +30,6 @@ meteo_france:
   
 # --------------- Partie sensor ----------------------------------------------------------------
 sensor:
-# ajout automatique rflink
-
-# ajout des capteur de darksky sur 4 jours et des capteurs util (ou pas)
- - platform: darksky
-   api_key: **********
-   forecast:
-     - 1
-     - 2
-     - 3
-     - 4
-   monitored_conditions:
-    - icon
-    - summary
-    - humidity
-    - temperature
-    - temperature_high
-    - temperature_low
-    - apparent_temperature
-    - apparent_temperature_high
-    - apparent_temperature_low
-    - wind_speed
-    - wind_bearing
-    - precip_type
-    - precip_probability
-    - precip_accumulation
-    - precip_intensity
-    - precip_intensity_max
-    - uv_index
-    - daily_summary
-    - pressure
-    - visibility
-   scan_interval:
-  # intervalle d'actualisation (pas trop car limité)
-    days: 0
-    hours: 0
-    minutes: 15
-    seconds: 00
-    milliseconds: 0
-   latitude: 43.*
-   longitude: -1.*
-
    
 # capteurs systheme hass
  - platform: systemmonitor
@@ -192,6 +151,19 @@ sensor:
       friendly_name: temps 1 jours
  - platform: template
    sensors:
+      dem_tmin:
+        value_template: >-
+             {% set dem_tmin = state_attr("weather.capbreton","forecast")[0]. templow | float %}
+                {{ dem_tmin }}
+ - platform: template
+   sensors:
+      dem_tmax:
+        value_template: >-
+             {% set dem_tmax = state_attr("weather.capbreton","forecast")[0].temperature | float %}
+                {{ dem_tmax }}
+
+ - platform: template
+   sensors:
      today_icon2:
       value_template: >-
           {% if state_attr("weather.capbreton","forecast")[1].condition == 'Clear' %}
@@ -224,6 +196,19 @@ sensor:
       friendly_name: temps 2 jours
  - platform: template
    sensors:
+      j2_tmin:
+        value_template: >-
+             {% set j2_tmin = state_attr("weather.capbreton","forecast")[1]. templow | float %}
+                {{ j2_tmin }}
+ - platform: template
+   sensors:
+      j2_tmax:
+        value_template: >-
+             {% set j2_tmax = state_attr("weather.capbreton","forecast")[1].temperature | float %}
+                {{ j2_tmax }}
+
+ - platform: template
+   sensors:
      today_icon3:
       value_template: >-
           {% if state_attr("weather.capbreton","forecast")[2].condition == 'Clear' %}
@@ -254,6 +239,18 @@ sensor:
             12
           {% endif %}
       friendly_name: temps 3 jours
+ - platform: template
+   sensors:
+      j3_tmin:
+        value_template: >-
+             {% set j3_tmin = state_attr("weather.capbreton","forecast")[2]. templow | float %}
+                {{ j3_tmin }}
+ - platform: template
+   sensors:
+      j3_tmax:
+        value_template: >-
+             {% set j3_tmax = state_attr("weather.capbreton","forecast")[2].temperature | float %}
+                {{ j3_tmax }}
 
 # Calcul pour transformé le pourcentage en degres pour les jauges pour 0=318° ; 100%=225° ; ((360-318)+225)/100=2.67
 # Donc 1%=2.67° ; Soit x le pencentage à afficher et y l'angle de l'aiguille:
