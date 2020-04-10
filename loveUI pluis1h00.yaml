@@ -5,7 +5,7 @@
      - cards:
           - color_type: card
             entity: sensor.capbreton_next_rain
-            name: Now
+            name: '0'
             show_icon: false
             show_state: false
             state:
