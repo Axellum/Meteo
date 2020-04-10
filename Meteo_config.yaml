@@ -294,6 +294,8 @@ sensor:
              {% set pluie = states('sensor.capbreton_next_rain') %}
               {% if is_state("sensor.capbreton_next_rain", 'No rain') %}
                 Pas de pluie.
+              {% elif  is_state("sensor.capbreton_next_rain", '0') %}
+              Averse en cours.
               {% else %}
                 {{ 'Averse dans ' }}{{ pluie }} mn
               {% endif %}
