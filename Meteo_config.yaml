@@ -124,6 +124,16 @@ sensor:
       value_template: >
          {{ now().day }}{{ ' ' }}{{ now().month }}{{ ' ' }}{{ now().year }}
 
+
+ - platform: template
+   sensors:
+    date_fr_final:
+      entity_id: sensor.date
+      friendly_name: "Date fr + H:mn"
+      icon_template: mdi:calendar-today
+      value_template: >
+         {{ '{:02} - {:02} - {:04}, {:02}:{:02}'.format( now().day, now().month, now().year, now().hour, now().minute) }}
+
 # Icone des trois jours suivant, vérifié que les iconnes correspondent au temps qu il fait, et que tout les termes soit les bons.
 #
  - platform: template
