@@ -115,6 +115,15 @@ sensor:
         {% set months = ["Jan", "Fev", "Mar", "Avr", "Mai", "Juin", "Juil", "Août", "Sep", "Oct", "Nov", "Dec"] %}
         {{ now().day | string + ' ' + months[now().month-1] }}
 
+ - platform: template
+   sensors:
+    date_fr:
+      entity_id: sensor.date
+      friendly_name: "Date fr"
+      icon_template: mdi:calendar-today
+      value_template: >
+         {{ now().day }}{{ ' ' }}{{ now().month }}{{ ' ' }}{{ now().year }}
+
 # Icone des trois jours suivant, vérifié que les iconnes correspondent au temps qu il fait, et que tout les termes soit les bons.
 #
  - platform: template
