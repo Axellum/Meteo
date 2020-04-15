@@ -1,0 +1,12 @@
+sensor:
+ - platform: template
+   sensors:
+    date_fr:
+      entity_id: input_datetime.both_date_and_time
+      friendly_name: "Date fr"
+      icon_template: mdi:calendar-today
+      value_template: >
+         {% set jour = states['input_datetime.both_date_and_time'].attributes.day %}
+         {% set mois = states['input_datetime.both_date_and_time'].attributes.month %}
+         {% set annee = states['input_datetime.both_date_and_time'].attributes.year %}
+         {{ jour }}{{" - "}}{{ mois }}{{" - "}}{{ annee }}
