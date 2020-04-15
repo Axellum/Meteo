@@ -1,6 +1,7 @@
 # Station météo Home assistant - Météo France, IOT Link -
 
 ------- En construction -------------------------
+
 MAJ 15/04/2020: Suppresion de Darks sky et Pi hole (bientot arreté). Passage sur ESP32, fini les problemes de buffer TCP! Du coup je vais pouvoir compléter un peu le projet. Légére modifications graphique sur la 1er page (réorganisation et complément d infos, recallage). L'arriver de quelques sonoffs et l utilisation de RFlink ESP vas me permetre de tester les commandes domatiques, et de récupérer les sondes météos des station météo du commerce ;).
 
 Affichage météo avec interaction sur les objets Home assistant:
