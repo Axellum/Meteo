@@ -1,6 +1,7 @@
-# Station météo Home assistant - Météo France, Darksky, IOT Link -
+# Station météo Home assistant - Météo France, IOT Link -
 
 ------- En construction -------------------------
+MAJ 15/04/2020: Suppresion de Darks sky et Pi hole (bientot arreté). Passage sur ESP32, fini les problemes de buffer TCP! Du coup je vais pouvoir compléter un peu le projet. Légére modifications graphique sur la 1er page (réorganisation et complément d infos, recallage). L'arriver de quelques sonoffs et l utilisation de RFlink ESP vas me permetre de tester les commandes domatiques, et de récupérer les sondes météos des station météo du commerce ;).
 
 Affichage météo avec interaction sur les objets Home assistant:
 
@@ -11,7 +12,8 @@ Affichage météo avec interaction sur les objets Home assistant:
         Un ESP32 (actuellement sur ESP8266 mais les ESP32 devrait être mieux adapté) 5 - 7€
         Un serveur avec Home assistant (Sur une VM débian installé dans une Freebox dans mon cas)
 
-L’écran permettra d'afficher le temps sur 3 jours (météo France et Darksky), l'arrivé de la prochaine averse, icône des risques d'orages / gel / neige, l'affichage des alerte Météo France ex.. Une deuxième page affichera les donné du serveur et PC, avec des jauges pour les données matériel du serveur, les donné UP et DOWL de la Freebox, nombre de client Pi Hole et trois boutons aux choix pour déclencher des événements sur Hass (avec IOT Link).
+L’écran permettra d'afficher le temps sur 3 jours (par météo France), détection des averses sur 1h00, icône des risques d'orages / gel / neige, l'affichage des alerte Météo France ex..
+D'autres pages afficheront les données du serveur et PC, avec des jauges.
 
 Présentation Youtube:
 https://youtu.be/dMXXnOEiKkE 
