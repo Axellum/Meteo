@@ -115,6 +115,7 @@ sensor:
         {% set months = ["Jan", "Fev", "Mar", "Avr", "Mai", "Juin", "Juil", "Août", "Sep", "Oct", "Nov", "Dec"] %}
         {{ now().day | string + ' ' + months[now().month-1] }}
 
+#exemple de formatage de la date
  - platform: template
    sensors:
     date_fr:
@@ -124,7 +125,7 @@ sensor:
       value_template: >
          {{ now().day }}{{ ' ' }}{{ now().month }}{{ ' ' }}{{ now().year }}
 
-
+#exemple de formatage de la date, peu formaté en 1 ligne plusieurs donné (ici ca donnerai: 04 - 05 - 2050, 05:03)
  - platform: template
    sensors:
     date_fr_final:
@@ -133,6 +134,33 @@ sensor:
       icon_template: mdi:calendar-today
       value_template: >
          {{ '{:02} - {:02} - {:04}, {:02}:{:02}'.format( now().day, now().month, now().year, now().hour, now().minute) }}
+
+#exemple de formatage de la date sur les input_date, ecriture de sortie comme le premier exemple
+ - platform: template
+   sensors:
+    date_fr:
+      entity_id: input_datetime.both_date_and_time
+      friendly_name: "Date fr Input"
+      icon_template: mdi:calendar-today
+      value_template: >
+         {% set jour = states['input_datetime.both_date_and_time'].attributes.day %}
+         {% set mois = states['input_datetime.both_date_and_time'].attributes.month %}
+         {% set annee = states['input_datetime.both_date_and_time'].attributes.year %}
+         {{ jour }}{{" - "}}{{ mois }}{{" - "}}{{ annee }}
+
+#exemple de formatage sur sun.sun avec remplacement de caracteres 
+ - platform: template
+   sensors:
+      nextsunrise:
+        friendly_name: 'Next Sunrise'
+        value_template: >
+          {{ as_timestamp(states.sun.sun.attributes.year) | timestamp_custom('(%I/%M%p)') | replace("(0", "") | replace("/", ":") | replace (")", "") }}
+        icon_template: mdi:weather-sunset-up
+      nextsunset:
+        friendly_name: 'Next Sunset'
+        value_template: >
+          {{ as_timestamp(states.sun.sun.attributes.next_setting) | timestamp_custom('(%I/%M%p)') | replace("(0", "") | replace("/", ":") | replace (")", "") }}
+        icon_template: mdi:weather-sunset-down
 
 # Icone des trois jours suivant, vérifié que les iconnes correspondent au temps qu il fait, et que tout les termes soit les bons.
 #
@@ -271,6 +299,14 @@ sensor:
              {% set j3_tmax = state_attr("weather.capbreton","forecast")[2].temperature | float %}
                 {{ j3_tmax }}
 
+# capteurs systheme hass - Merci à Paradis Artificiels
+ - platform: systemmonitor
+   resources:
+      - type: memory_use_percent
+      - type: processor_use
+      - type: disk_use_percent
+        arg: /
+
 # Calcul pour transformé le pourcentage en degres pour les jauges pour 0=318° ; 100%=225° ; ((360-318)+225)/100=2.67
 # Donc 1%=2.67° ; Soit x le pencentage à afficher et y l'angle de l'aiguille:
 # 42°/2.67 = 15.73% ; si x > 15.73 => y=(x*2.7)+(318-360) ; sinon x < 15.73 alors y=(x*2.7)+318
@@ -280,31 +316,33 @@ sensor:
         value_template: >-
              {% set disk_use = states('sensor.disk_use_percent') | float  %}
                {%- if disk_use > 15.73 -%}
-                {{ states('sensor.disk_use_percent') | round(1) |float  * 2.7 - 42}}
+                {{ (states('sensor.disk_use_percent') | float  * 2.7 - 42 |float)|round(1)}}
                {% else %}
-                {{ states('sensor.disk_use_percent') | round(1) |float  * 2.7 + 318}}
+                {{ (states('sensor.disk_use_percent') | float  * 2.7 + 318 |float)|round(1)}}
                 {%- endif -%}
+
  - platform: template
    sensors:
       gauge_uc:
         value_template: >-
              {% set processor_use = states('sensor.processor_use') | float %}
                {%- if processor_use > 15.73 -%}
-                {{ states('sensor.processor_use') | round(1)|float * 2.7 - 42}}
+                {{ (states('sensor.processor_use') | float * 2.7 - 42 |float)|round(1)}}
                {% else %}
-                {{ states('sensor.processor_use') | round(1)|float * 2.7 + 318}}
+                {{ (states('sensor.processor_use') | float * 2.7 + 318 |float)|round(1)}}
                 {%- endif -%}
+
  - platform: template
    sensors:
       gauge_ram:
         value_template: >-
              {% set memory_use = states('sensor.memory_use_percent') | float %}
                {%- if memory_use > 15.73 -%}
-                {{ states('sensor.memory_use_percent') | round(1)|float * 2.7 - 42}}
+                {{ (states('sensor.memory_use_percent') | float * 2.7 - 42 |float)|round(1)}}
                {% else %}
-                {{ states('sensor.memory_use_percent')| round(1)| float * 2.7 + 318}}
+                {{ (states('sensor.memory_use_percent') | float * 2.7 + 318 |float)|round(1)}}
                 {%- endif -%}
-                
+            
 # texte prevision de la prochaine pluis
  - platform: template
    sensors:
@@ -319,6 +357,191 @@ sensor:
                 {{ 'Averse dans ' }}{{ pluie }} mn
               {% endif %}
       friendly_name: Pluie
+
+# Iconnes pour la pluis sur 1h - ajout des entity_id, sinon pas de maj
+ - platform: template
+   scan_interval: 2
+   sensors:
+      pluis_0mn:
+       value_template: >-
+          {% if states['sensor.capbreton_next_rain'].attributes.rain_level_0min == 1 %}
+          78
+          {% elif states['sensor.capbreton_next_rain'].attributes.rain_level_0min == 2 %}
+          79
+          {% elif states['sensor.capbreton_next_rain'].attributes.rain_level_0min == 3 %}
+          80
+          {% elif states['sensor.capbreton_next_rain'].attributes.rain_level_0min == 4 %}
+          81
+          {% else %}
+          82
+          {% endif %}
+       friendly_name: pluis_0mn
+       entity_id: sensor.capbreton_next_rain
+      pluis_5mn:
+       value_template: >-
+          {% if states['sensor.capbreton_next_rain'].attributes.rain_level_5min == 1 %}
+          78
+          {% elif states['sensor.capbreton_next_rain'].attributes.rain_level_5min == 2 %}
+          79
+          {% elif states['sensor.capbreton_next_rain'].attributes.rain_level_5min == 3 %}
+          80
+          {% elif states['sensor.capbreton_next_rain'].attributes.rain_level_5min == 4 %}
+          81
+          {% else %}
+          82
+          {% endif %}
+       friendly_name: pluis_5mn
+       entity_id: sensor.capbreton_next_rain
+      pluis_10mn:
+       value_template: >-
+          {% if states['sensor.capbreton_next_rain'].attributes.rain_level_10min == 1 %}
+          78
+          {% elif states['sensor.capbreton_next_rain'].attributes.rain_level_10min == 2 %}
+          79
+          {% elif states['sensor.capbreton_next_rain'].attributes.rain_level_10min == 3 %}
+          80
+          {% elif states['sensor.capbreton_next_rain'].attributes.rain_level_10min == 4 %}
+          81
+          {% else %}
+          82
+          {% endif %}
+       friendly_name: pluis_10mn
+       entity_id: sensor.capbreton_next_rain
+      pluis_15mn:
+       value_template: >-
+          {% if states['sensor.capbreton_next_rain'].attributes.rain_level_15min == 1 %}
+          78
+          {% elif states['sensor.capbreton_next_rain'].attributes.rain_level_15min == 2 %}
+          79
+          {% elif states['sensor.capbreton_next_rain'].attributes.rain_level_15min == 3 %}
+          80
+          {% elif states['sensor.capbreton_next_rain'].attributes.rain_level_15min == 4 %}
+          81
+          {% else %}
+          82
+          {% endif %}
+       friendly_name: pluis_15mn
+       entity_id: sensor.capbreton_next_rain
+      pluis_20mn:
+       value_template: >-
+          {% if states['sensor.capbreton_next_rain'].attributes.rain_level_20min == 1 %}
+          78
+          {% elif states['sensor.capbreton_next_rain'].attributes.rain_level_20min == 2 %}
+          79
+          {% elif states['sensor.capbreton_next_rain'].attributes.rain_level_20min == 3 %}
+          80
+          {% elif states['sensor.capbreton_next_rain'].attributes.rain_level_20min == 4 %}
+          81
+          {% else %}
+          82
+          {% endif %}
+       friendly_name: pluis_20mn
+       entity_id: sensor.capbreton_next_rain
+      pluis_25mn:
+       value_template: >-
+          {% if states['sensor.capbreton_next_rain'].attributes.rain_level_25min == 1 %}
+          78
+          {% elif states['sensor.capbreton_next_rain'].attributes.rain_level_25min == 2 %}
+          79
+          {% elif states['sensor.capbreton_next_rain'].attributes.rain_level_25min == 3 %}
+          80
+          {% elif states['sensor.capbreton_next_rain'].attributes.rain_level_25min == 4 %}
+          81
+          {% else %}
+          82
+          {% endif %}
+       friendly_name: pluis_25mn
+       entity_id: sensor.capbreton_next_rain
+      pluis_30mn:
+       value_template: >-
+          {% if states['sensor.capbreton_next_rain'].attributes.rain_level_30min == 1 %}
+          78
+          {% elif states['sensor.capbreton_next_rain'].attributes.rain_level_30min == 2  %}
+          79
+          {% elif states['sensor.capbreton_next_rain'].attributes.rain_level_30min == 3 %}
+          80
+          {% elif states['sensor.capbreton_next_rain'].attributes.rain_level_30min == 4 %}
+          81
+          {% else %}
+          82
+          {% endif %}
+       friendly_name: pluis_30mn
+       entity_id: sensor.capbreton_next_rain
+      pluis_35mn:
+       value_template: >-
+          {% if states['sensor.capbreton_next_rain'].attributes.rain_level_35min == 1 %}
+          78
+          {% elif states['sensor.capbreton_next_rain'].attributes.rain_level_35min == 2 %}
+          79
+          {% elif states['sensor.capbreton_next_rain'].attributes.rain_level_35min == 3 %}
+          80
+          {% elif states['sensor.capbreton_next_rain'].attributes.rain_level_35min == 4 %}
+          81
+          {% else %}
+          82
+          {% endif %}
+       friendly_name: pluis_35mn
+       entity_id: sensor.capbreton_next_rain
+      pluis_40mn:
+       value_template: >-
+          {% if states['sensor.capbreton_next_rain'].attributes.rain_level_40min == 1 %}
+          78
+          {% elif states['sensor.capbreton_next_rain'].attributes.rain_level_40min == 2 %}
+          79
+          {% elif states['sensor.capbreton_next_rain'].attributes.rain_level_40min == 3 %}
+          80
+          {% elif states['sensor.capbreton_next_rain'].attributes.rain_level_40min == 4 %}
+          81
+          {% else %}
+          82
+          {% endif %}
+       friendly_name: pluis_40mn
+       entity_id: sensor.capbreton_next_rain
+      pluis_45mn:
+       value_template: >-
+          {% if states['sensor.capbreton_next_rain'].attributes.rain_level_45min == 1 %}
+          78
+          {% elif states['sensor.capbreton_next_rain'].attributes.rain_level_45min == 2 %}
+          79
+          {% elif states['sensor.capbreton_next_rain'].attributes.rain_level_45min == 3 %}
+          80
+          {% elif states['sensor.capbreton_next_rain'].attributes.rain_level_45min == 4 %}
+          81
+          {% else %}
+          82
+          {% endif %}
+       friendly_name: pluis_45mn
+       entity_id: sensor.capbreton_next_rain
+      pluis_50mn:
+       value_template: >-
+          {% if states['sensor.capbreton_next_rain'].attributes.rain_level_50min == 1 %}
+          78
+          {% elif states['sensor.capbreton_next_rain'].attributes.rain_level_50min == 2 %}
+          79
+          {% elif states['sensor.capbreton_next_rain'].attributes.rain_level_50min == 3 %}
+          80
+          {% elif states['sensor.capbreton_next_rain'].attributes.rain_level_50min == 4 %}
+          81
+          {% else %}
+          82
+          {% endif %}
+       friendly_name: pluis_50mn
+       entity_id: sensor.capbreton_next_rain
+      pluis_55mn:
+       value_template: >-
+          {% if states['sensor.capbreton_next_rain'].attributes.rain_level_55min == 1 %}
+          78
+          {% elif states['sensor.capbreton_next_rain'].attributes.rain_level_55min == 2 %}
+          79
+          {% elif states['sensor.capbreton_next_rain'].attributes.rain_level_55min == 3 %}
+          80
+          {% elif states['sensor.capbreton_next_rain'].attributes.rain_level_55min == 4 %}
+          81
+          {% else %}
+          82
+          {% endif %}
+       friendly_name: pluis_55mn
+       entity_id: sensor.capbreton_next_rain
 
 # Icone du jours meteo france
  - platform: template
@@ -566,7 +789,7 @@ sensor:
          Aucune alerte.
         {% endif %}
       friendly_name: text alert
-      
+
 
 # ----------------------------------- BINARY SENSOR ----------------------------------------------------------------------------
 binary_sensor:
