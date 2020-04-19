@@ -162,6 +162,80 @@ sensor:
           {{ as_timestamp(states.sun.sun.attributes.next_setting) | timestamp_custom('(%I/%M%p)') | replace("(0", "") | replace("/", ":") | replace (")", "") }}
         icon_template: mdi:weather-sunset-down
 
+# Icone du jours meteo france
+ - platform: template
+   sensors:
+      today_icon:
+       value_template: >-
+          {% if is_state("sensor.capbreton_weather", 'Nuit claire') %}
+            41
+          {% elif is_state("sensor.capbreton_weather", 'Très nuageux') %}
+            37
+          {% elif is_state("sensor.capbreton_weather", 'Brume') %}
+            69
+          {% elif is_state("sensor.capbreton_weather", 'bancs de brouillard') %}
+            56
+          {% elif is_state("sensor.capbreton_weather", 'Brouillard givrant') %}
+            63 
+          {% elif is_state("sensor.capbreton_weather", 'Risque de grêle') %}
+            60
+          {% elif is_state("sensor.capbreton_weather", "Risque d'orages") %}
+            64
+          {% elif is_state("sensor.capbreton_weather", 'Orages') %}
+            65
+          {% elif is_state("sensor.capbreton_weather", 'Pluie orageuses') %}
+            65
+          {% elif is_state("sensor.capbreton_weather", 'Pluies orageuses') %}
+            65
+          {% elif is_state("sensor.capbreton_weather", 'Averses orageuses') %}
+            64
+          {% elif is_state("sensor.capbreton_weather", 'Ciel voilé') %}
+            67
+          {% elif is_state("sensor.capbreton_weather", 'Ciel voilé nuit') %}
+            66
+          {% elif is_state("sensor.capbreton_weather", 'Éclaircies') %}
+            39
+          {% elif is_state("sensor.capbreton_weather", 'Pluie forte') %}
+            50 
+          {% elif is_state("sensor.capbreton_weather", 'Bruine') %}
+            67
+          {% elif is_state("sensor.capbreton_weather", 'Bruine / Pluie faible') %}
+            69
+          {% elif is_state("sensor.capbreton_weather", 'Pluie faible') %}
+            48
+          {% elif is_state("sensor.capbreton_weather", 'Pluies éparses / Rares averses') %}
+            48
+          {% elif is_state("sensor.capbreton_weather", 'Pluies éparses') %}
+            48
+          {% elif is_state("sensor.capbreton_weather", 'Rares averses') %}
+            48
+          {% elif is_state("sensor.capbreton_weather", 'Pluie / Averses') %}
+            44
+          {% elif is_state("sensor.capbreton_weather", 'Averses') %}
+            44
+          {% elif is_state("sensor.capbreton_weather", 'Pluie') %}
+            43
+          {% elif is_state("sensor.capbreton_weather", 'Neige / Averses de neige') %}
+            57 
+          {% elif is_state("sensor.capbreton_weather", 'Neige') %}
+            58
+          {% elif is_state("sensor.capbreton_weather", 'Averses de neige') %}
+            57
+          {% elif is_state("sensor.capbreton_weather", 'Neige forte') %}
+            58
+          {% elif is_state("sensor.capbreton_weather", 'Quelques flocons') %}
+            57
+          {% elif is_state("sensor.capbreton_weather", 'Pluie et neige') %}
+            57
+          {% elif is_state("sensor.capbreton_weather", 'Pluie verglaçante') %}
+            77
+          {% elif is_state("sensor.capbreton_weather", 'Ensoleillé') %}
+            75
+          {% else %}
+            55
+          {% endif %}
+       friendly_name: meteo france
+
 # Icone des trois jours suivant, vérifié que les iconnes correspondent au temps qu il fait, et que tout les termes soit les bons.
 #
  - platform: template
@@ -542,80 +616,6 @@ sensor:
           {% endif %}
        friendly_name: pluis_55mn
        entity_id: sensor.capbreton_next_rain
-
-# Icone du jours meteo france
- - platform: template
-   sensors:
-      today_icon:
-       value_template: >-
-          {% if is_state("sensor.capbreton_weather", 'Nuit claire') %}
-            41
-          {% elif is_state("sensor.capbreton_weather", 'Très nuageux') %}
-            37
-          {% elif is_state("sensor.capbreton_weather", 'Brume') %}
-            69
-          {% elif is_state("sensor.capbreton_weather", 'bancs de brouillard') %}
-            56
-          {% elif is_state("sensor.capbreton_weather", 'Brouillard givrant') %}
-            63 
-          {% elif is_state("sensor.capbreton_weather", 'Risque de grêle') %}
-            60
-          {% elif is_state("sensor.capbreton_weather", "Risque d'orages") %}
-            64
-          {% elif is_state("sensor.capbreton_weather", 'Orages') %}
-            65
-          {% elif is_state("sensor.capbreton_weather", 'Pluie orageuses') %}
-            65
-          {% elif is_state("sensor.capbreton_weather", 'Pluies orageuses') %}
-            65
-          {% elif is_state("sensor.capbreton_weather", 'Averses orageuses') %}
-            64
-          {% elif is_state("sensor.capbreton_weather", 'Ciel voilé') %}
-            67
-          {% elif is_state("sensor.capbreton_weather", 'Ciel voilé nuit') %}
-            66
-          {% elif is_state("sensor.capbreton_weather", 'Éclaircies') %}
-            39
-          {% elif is_state("sensor.capbreton_weather", 'Pluie forte') %}
-            50 
-          {% elif is_state("sensor.capbreton_weather", 'Bruine') %}
-            67
-          {% elif is_state("sensor.capbreton_weather", 'Bruine / Pluie faible') %}
-            69
-          {% elif is_state("sensor.capbreton_weather", 'Pluie faible') %}
-            48
-          {% elif is_state("sensor.capbreton_weather", 'Pluies éparses / Rares averses') %}
-            48
-          {% elif is_state("sensor.capbreton_weather", 'Pluies éparses') %}
-            48
-          {% elif is_state("sensor.capbreton_weather", 'Rares averses') %}
-            48
-          {% elif is_state("sensor.capbreton_weather", 'Pluie / Averses') %}
-            44
-          {% elif is_state("sensor.capbreton_weather", 'Averses') %}
-            44
-          {% elif is_state("sensor.capbreton_weather", 'Pluie') %}
-            43
-          {% elif is_state("sensor.capbreton_weather", 'Neige / Averses de neige') %}
-            57 
-          {% elif is_state("sensor.capbreton_weather", 'Neige') %}
-            58
-          {% elif is_state("sensor.capbreton_weather", 'Averses de neige') %}
-            57
-          {% elif is_state("sensor.capbreton_weather", 'Neige forte') %}
-            58
-          {% elif is_state("sensor.capbreton_weather", 'Quelques flocons') %}
-            57
-          {% elif is_state("sensor.capbreton_weather", 'Pluie et neige') %}
-            57
-          {% elif is_state("sensor.capbreton_weather", 'Pluie verglaçante') %}
-            77
-          {% elif is_state("sensor.capbreton_weather", 'Ensoleillé') %}
-            75
-          {% else %}
-            55
-          {% endif %}
-       friendly_name: meteo france
 
 # Alerte meteo
  - platform: template
