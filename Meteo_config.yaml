@@ -160,20 +160,21 @@ sensor:
          {% set mois = states['input_datetime.both_date_and_time'].attributes.month %}
          {% set annee = states['input_datetime.both_date_and_time'].attributes.year %}
          {{ jour }}{{" - "}}{{ mois }}{{" - "}}{{ annee }}
-
-#exemple de formatage sur sun.sun avec remplacement de caracteres - ne sert plus dans ce cas, gardé comme exemple si jamais
+#exemple de formatage sur sun.sun avec remplacement de caracteres 
  - platform: template
    sensors:
       nextsunrise:
-        friendly_name: 'Next Sunrise'
+        friendly_name: 'Lever'
         value_template: >
-          {{ as_timestamp(states.sun.sun.attributes.next_rising) | timestamp_custom('(%I/%M%p)') | replace("(0", "") | replace("/", ":") | replace (")", "") }}
+          {{ as_timestamp(states.sun.sun.attributes.next_rising) | timestamp_custom('(%H/%M)') | replace("(0", "") | replace("(", "") | replace("/", ":") | replace (")", "") }}
         icon_template: mdi:weather-sunset-up
+        entity_id: sun.sun
       nextsunset:
-        friendly_name: 'Next Sunset'
+        friendly_name: 'Coucher'
         value_template: >
-          {{ as_timestamp(states.sun.sun.attributes.next_setting) | timestamp_custom('(%I/%M%p)') | replace("(0", "") | replace("/", ":") | replace (")", "") }}
+          {{ as_timestamp(states.sun.sun.attributes.next_setting) | timestamp_custom('(%H/%M)') | replace("(0", "") | replace("(", "") | replace("/", ":") | replace (")", "") }}
         icon_template: mdi:weather-sunset-down
+        entity_id: sun.sun
 
 # Icone du jours meteo france
  - platform: template
