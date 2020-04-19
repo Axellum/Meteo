@@ -17,6 +17,19 @@ script: !include scripts.yaml
 scene: !include scenes.yaml
 
 
+plant:
+  simulated_plant:
+    sensors:
+      moisture: sensor.humidite
+#      battery: sensor.mqtt_plant_battery
+      temperature: sensor.temperature
+#      conductivity: sensor.mqtt_plant_conductivity
+#      brightness: sensor.mqtt_plant_brightness
+    min_moisture: 20
+    max_moisture: 60
+    min_battery: 17
+    min_conductivity: 500
+    min_temperature: 15
     
 # integration de pie hole, antie pub et nb de client
 pi_hole:
@@ -148,13 +161,13 @@ sensor:
          {% set annee = states['input_datetime.both_date_and_time'].attributes.year %}
          {{ jour }}{{" - "}}{{ mois }}{{" - "}}{{ annee }}
 
-#exemple de formatage sur sun.sun avec remplacement de caracteres 
+#exemple de formatage sur sun.sun avec remplacement de caracteres - ne sert plus dans ce cas, gardé comme exemple si jamais
  - platform: template
    sensors:
       nextsunrise:
         friendly_name: 'Next Sunrise'
         value_template: >
-          {{ as_timestamp(states.sun.sun.attributes.year) | timestamp_custom('(%I/%M%p)') | replace("(0", "") | replace("/", ":") | replace (")", "") }}
+          {{ as_timestamp(states.sun.sun.attributes.next_rising) | timestamp_custom('(%I/%M%p)') | replace("(0", "") | replace("/", ":") | replace (")", "") }}
         icon_template: mdi:weather-sunset-up
       nextsunset:
         friendly_name: 'Next Sunset'
