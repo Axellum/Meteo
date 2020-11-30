@@ -1,10 +1,10 @@
 # Station météo Home assistant - Météo France, IOT Link -
 
-------- En construction -------------------------
+MAJ 17/11/2020: La version 'final', plus simple, en préparation ici: https://github.com/Axellum/Ecran-meteo-Nextion-par-ESPHome
 
-MAJ 17/11/2020: La version 'final', plus simple, devrait arriver sous peu...
-Attention: L'API Météo France a évolué, du coup une partie du code est obsolette.
+Attention: L'API Météo France a évolué, du coup une partie du code sur ce git est obsolette.
 Préview de la version simplifié:
+
 ![V simple](/20201117_112501.png)
 
 MAJ 15/04/2020: Suppresion de Darks sky et Pi hole (bientot arreté). Passage sur ESP32, fini les problemes de buffer TCP! Du coup je vais pouvoir compléter un peu le projet. Légére modifications graphique sur la 1er page (réorganisation et complément d infos, recallage). L'arriver de quelques sonoffs et l utilisation de RFlink ESP vas me permetre de tester les commandes domatiques, et de récupérer les sondes météos des station météo du commerce ;).
