@@ -1,6 +1,8 @@
 # Station météo Home assistant - Météo France, IOT Link -
 
-MAJ 17/11/2020: La version 'final', plus simple, en préparation ici: https://github.com/Axellum/Ecran-meteo-Nextion-par-ESPHome
+- **** Ca continu par là:
+https://github.com/Axellum/NextionWeather-Meteo-France
+
 
 Attention: L'API Météo France a évolué, du coup une partie du code sur ce git est obsolette.
 Préview de la version simplifié:
